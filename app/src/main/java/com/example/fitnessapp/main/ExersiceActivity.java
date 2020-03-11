@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.AlertDialog;
 import android.app.Notification;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
@@ -165,6 +166,15 @@ public class ExersiceActivity extends AppCompatActivity {
 
 
 
+
+        SharedPreferences sharedPreferences2 = getSharedPreferences(KeysSPExercise.EXERCISE_NAME, Context.MODE_PRIVATE);
+
+        int spCorrectExersice = sharedPreferences2.getInt(KeysSPExercise.CORRECT_EXERCISE, 6);
+        System.out.println("TEST SP 1 =" + spCorrectExersice);
+
+        if (spCorrectExersice != 0){
+            counterEx = spCorrectExersice;
+        }
 
 
 
@@ -363,6 +373,7 @@ public class ExersiceActivity extends AppCompatActivity {
                     .collection(tvExName.getText().toString()).document("12.12.12").set(exerciseHistoryToFIreBase);
 
 
+            editSharedPreferance(99);
 
             finish();
 
@@ -684,11 +695,8 @@ public class ExersiceActivity extends AppCompatActivity {
 
         btnYes.setOnClickListener(v->{
             System.out.println("Click Yess!!!@#%&$!");
-            SharedPreferences sharedPreferences = getSharedPreferences(KeysSPExercise.EXERCISE_NAME, MODE_PRIVATE);
-            SharedPreferences.Editor editor = sharedPreferences.edit();
 
-            editor.putInt(KeysSPExercise.NUMBER_OF_EXERCISES, exercises.size());
-            editor.putInt(KeysSPExercise.CORRECT_EXERCISE, counterEx);
+            editSharedPreferance(exercises);
 
             finish();
         });
@@ -696,6 +704,27 @@ public class ExersiceActivity extends AppCompatActivity {
         mBuilder.setView(mView);
         AlertDialog dialog = mBuilder.create();
         dialog.show();
+    }
+
+    private void editSharedPreferance(List<Exercise> exercises){
+        SharedPreferences sharedPreferences = getSharedPreferences(KeysSPExercise.EXERCISE_NAME, MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+
+        editor.putInt(KeysSPExercise.NUMBER_OF_EXERCISES, exercises.size());
+        editor.putInt(KeysSPExercise.CORRECT_EXERCISE, counterEx);
+
+        editor.apply();
+
+    }
+
+    private void editSharedPreferance(int finishWorkout){
+        SharedPreferences sharedPreferences = getSharedPreferences(KeysSPExercise.EXERCISE_NAME, MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+
+        editor.putInt(KeysSPExercise.CORRECT_EXERCISE, finishWorkout);
+
+        editor.apply();
+
     }
 
 

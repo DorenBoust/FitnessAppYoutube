@@ -75,6 +75,7 @@ public class FitnessFragment extends Fragment {
 
     //resume Exercise
     private SeekBar exersiceProgressBar;
+    private ConstraintLayout exInnerLayout;
 
 
 
@@ -85,6 +86,12 @@ public class FitnessFragment extends Fragment {
     }
 
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        sharedPreference();
+
+    }
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
@@ -107,6 +114,7 @@ public class FitnessFragment extends Fragment {
         lottieAnimationDayOff = v.findViewById(R.id.lottie_dayOff);
 
         exersiceProgressBar = v.findViewById(R.id.training_progress);
+        exInnerLayout = v.findViewById(R.id.fitness_main_ex_layout_inner);
 
 
 
@@ -119,22 +127,7 @@ public class FitnessFragment extends Fragment {
 
 
         //SharedPreferences from exercise Activity
-        SharedPreferences sharedPreferences = this.getActivity().getSharedPreferences(KeysSPExercise.EXERCISE_NAME, Context.MODE_PRIVATE);
-
-        int spNumberOfExercises = sharedPreferences.getInt(KeysSPExercise.NUMBER_OF_EXERCISES, 6);
-        exersiceProgressBar.setMax(spNumberOfExercises);
-
-        int spCorrectExercise = sharedPreferences.getInt(KeysSPExercise.CORRECT_EXERCISE, 0);
-        exersiceProgressBar.setProgress(spCorrectExercise);
-
-        System.out.println("SHAREDPREFERCENCE  = " + spCorrectExercise);
-        if (spCorrectExercise != 0){
-
-            exersiceProgressBar.setVisibility(View.VISIBLE);
-
-        } else {
-            exersiceProgressBar.setVisibility(View.INVISIBLE);
-        }
+        sharedPreference();
 
         //recyclerView
         final RecyclerView recyclerView = v.findViewById(R.id.fitness_recyclerView);
@@ -270,4 +263,32 @@ public class FitnessFragment extends Fragment {
         countDownTimer.start();
 
     }
+
+    private void sharedPreference(){
+        SharedPreferences sharedPreferences = this.getActivity().getSharedPreferences(KeysSPExercise.EXERCISE_NAME, Context.MODE_PRIVATE);
+
+        int spNumberOfExercises = sharedPreferences.getInt(KeysSPExercise.NUMBER_OF_EXERCISES, 6);
+        exersiceProgressBar.setMax(spNumberOfExercises-1);
+
+        int spCorrectExercise = sharedPreferences.getInt(KeysSPExercise.CORRECT_EXERCISE, 0);
+        exersiceProgressBar.setProgress(spCorrectExercise);
+
+        System.out.println("SHAREDPREFERCENCE  = " + spCorrectExercise);
+        if (spCorrectExercise != 0){
+
+            exersiceProgressBar.setVisibility(View.VISIBLE);
+            mainDayLayout.setBackground(getResources().getDrawable(R.drawable.background_main_fitness_day_pause_exersice));
+            tvMainDayName.setTextColor(getResources().getColor(R.color.mainGreen));
+            tvMainEsTime.setTextColor(getResources().getColor(R.color.mainGreen));
+            tvMainNumberOfEx.setTextColor(getResources().getColor(R.color.mainGreen));
+            btnMainStart.setText("המשך אימון");
+            btnMainStart.setBackground(getResources().getDrawable(R.drawable.btn_resume_workout));
+            btnMainStart.setTextColor(getResources().getColor(R.color.mainRed));
+
+
+        } else {
+            exersiceProgressBar.setVisibility(View.INVISIBLE);
+        }
+    }
+
 }
