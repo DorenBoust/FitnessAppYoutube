@@ -555,7 +555,7 @@ public class ExersiceActivity extends AppCompatActivity {
 
 
         Picasso.get().load(exercises.get(counterEx).getImage()).into(ivMainImage);
-        tvDay.setText(CustomMethods.convertDateToHebrew(dayName));
+        tvDay.setText(CustomMethods.convertDate(dayName));
         tvSets.setText(String.valueOf(exercises.get(counterEx).getSets()));
         tvRepit.setText(String.valueOf(exercises.get(counterEx).getRepitition()));
         tvExName.setText(String.valueOf(exercises.get(counterEx).getExName()));

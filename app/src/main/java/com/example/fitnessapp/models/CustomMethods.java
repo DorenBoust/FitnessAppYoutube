@@ -54,7 +54,7 @@ public class CustomMethods {
         return total;
     }
 
-    public static String convertDateToHebrew(String correctDay){
+    public static String convertDate(String correctDay){
         switch (correctDay){
             case "sunday":
                 return "יום ראשון";
@@ -70,8 +70,44 @@ public class CustomMethods {
                 return "יום שישי";
             case "saturday":
                 return "יום שבת";
+            case "יום ראשון":
+                return "יום ראשון";
+            case "יום שני":
+                return "יום שני";
+            case "יום שלישי":
+                return "יום שלישי";
+            case "יום רביעי":
+                return "יום רביעי";
+            case "יום חמישי":
+                return "יום חמישי";
+            case "יום שישי":
+                return "יום שישי";
+            case "יום שבת":
+                return "יום שבת";
         }
 
         return null;
     }
+
+    public static String convertDateToEnglish(String correctDay){
+        switch (correctDay){
+            case "יום ראשון":
+                return "sunday";
+            case "יום שני":
+                return "monday";
+            case "יום שלישי":
+                return "tuesday";
+            case "יום רביעי":
+                return "wednesday";
+            case "יום חמישי":
+                return "thursday";
+            case "יום שישי":
+                return "friday";
+            case "יום שבת":
+                return "saturday";
+        }
+
+        return null;
+    }
+
 }

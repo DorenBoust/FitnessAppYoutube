@@ -87,7 +87,7 @@ public class FitnessFragment extends Fragment {
         super.onResume();
         sharedPreference();
         if (sharedPreferenceFinish() == 99){
-            dayOffName.setText(CustomMethods.convertDateToHebrew(correctDay));
+            dayOffName.setText(CustomMethods.convertDate(correctDay));
             lottieAnimationDayOff.setAnimation(R.raw.finish_workout);
             lottieAnimationDayOff.playAnimation();
             mainDayLayout.setVisibility(View.INVISIBLE);
@@ -114,6 +114,11 @@ public class FitnessFragment extends Fragment {
 
         correctDay = sdf.format(date).toLowerCase();
 
+        if (correctDay.contains("י")){
+            String s = CustomMethods.convertDateToEnglish(correctDay);
+            correctDay = s;
+        }
+
         mainDayLayout = v.findViewById(R.id.fitness_main_ex_layout);
         mainDayLayoutDayOff = v.findViewById(R.id.fitness_main_ex_layout_dayOff);
         dayOffName = v.findViewById(R.id.fitness_tv_dayoff_dayName);
@@ -129,7 +134,7 @@ public class FitnessFragment extends Fragment {
             }
         });
 
-
+        System.out.println("CorrectDay = " + correctDay);
 
         //get Data and start
         user = (User) getArguments().getSerializable(KeysUserFragment.USER_DATA_TO_FRAGMENT);
@@ -185,10 +190,11 @@ public class FitnessFragment extends Fragment {
         List<String> findDayName = new ArrayList<>();
         for (Day day : daysList) {
             findDayName.add(day.getDayName());
+            System.out.println(day);
         }
 
         if (!findDayName.contains(correctDay)){
-            dayOffName.setText(CustomMethods.convertDateToHebrew(correctDay));
+            dayOffName.setText(CustomMethods.convertDate(correctDay));
             lottieAnimationDayOff.setAnimation(R.raw.day_off);
             lottieAnimationDayOff.playAnimation();
             mainDayLayout.setVisibility(View.INVISIBLE);
@@ -204,7 +210,7 @@ public class FitnessFragment extends Fragment {
 
         //if user allready the workout today
         if (sharedPreferenceFinish() == 99){
-            dayOffName.setText(CustomMethods.convertDateToHebrew(correctDay));
+            dayOffName.setText(CustomMethods.convertDate(correctDay));
             lottieAnimationDayOff.playAnimation();
             mainDayLayout.setVisibility(View.INVISIBLE);
             mainDayLayoutDayOff.setAnimation(AnimationUtils.loadAnimation(getContext(),R.anim.enter_bottom_to_top));
@@ -217,7 +223,7 @@ public class FitnessFragment extends Fragment {
             if (day.getDayName().equals(correctDay)){
                 mainDayLayoutDayOff.setVisibility(View.INVISIBLE);
                 mainDayLayout.setAnimation(AnimationUtils.loadAnimation(getContext(),R.anim.enter_bottom_to_top));
-                tvMainDayName.setText(CustomMethods.convertDateToHebrew(day.getDayName()));
+                tvMainDayName.setText(CustomMethods.convertDate(day.getDayName()));
                 getInnerExParameters(day);
 
                 setSharedPreferenceDay();
