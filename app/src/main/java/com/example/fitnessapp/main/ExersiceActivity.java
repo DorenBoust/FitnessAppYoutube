@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.app.AlertDialog;
 import android.app.Notification;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
@@ -18,7 +19,6 @@ import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.EditText;
@@ -28,6 +28,7 @@ import android.widget.TextView;
 import com.example.fitnessapp.R;
 import com.example.fitnessapp.keys.KeysFirebaseStore;
 import com.example.fitnessapp.keys.KeysIntents;
+import com.example.fitnessapp.keys.KeysSPExercise;
 import com.example.fitnessapp.models.CustomMethods;
 import com.example.fitnessapp.user.Exercise;
 import com.example.fitnessapp.user.ExerciseHistory;
@@ -38,7 +39,6 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.gson.Gson;
-import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.PlayerConstants;
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.YouTubePlayer;
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.listeners.AbstractYouTubePlayerListener;
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views.YouTubePlayerView;
@@ -117,6 +117,10 @@ public class ExersiceActivity extends AppCompatActivity {
     private ConstraintLayout youtubeLayout;
     private YouTubePlayerView youTubePlayerView;
 
+    //stop workout
+    private Button stopWorkoutBTN;
+    private Button dialogYesBTN;
+
 
 
 
@@ -157,6 +161,7 @@ public class ExersiceActivity extends AppCompatActivity {
         youtubeLayout = findViewById(R.id.youtubeLayout);
         youTubePlayerView = findViewById(R.id.youtubeVideoPlayer);
 
+        stopWorkoutBTN = findViewById(R.id.stop_workout);
 
 
 
@@ -451,6 +456,12 @@ public class ExersiceActivity extends AppCompatActivity {
         });
 
 
+        //stop workout
+        stopWorkoutBTN.setOnClickListener(v->{
+            showQuitDialog(exercises);
+        });
+
+
     }
 
 
@@ -665,5 +676,27 @@ public class ExersiceActivity extends AppCompatActivity {
         return youtubeID;
 
     }
+
+    private void showQuitDialog(List<Exercise> exercises){
+        AlertDialog.Builder mBuilder = new AlertDialog.Builder(this);
+        View mView = getLayoutInflater().inflate(R.layout.stop_workcout_dialog, null);
+        Button btnYes = mView.findViewById(R.id.btn_stopWorkout_dialog);
+
+        btnYes.setOnClickListener(v->{
+            System.out.println("Click Yess!!!@#%&$!");
+            SharedPreferences sharedPreferences = getSharedPreferences(KeysSPExercise.EXERCISE_NAME, MODE_PRIVATE);
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+
+            editor.putInt(KeysSPExercise.NUMBER_OF_EXERCISES, exercises.size());
+            editor.putInt(KeysSPExercise.CORRECT_EXERCISE, counterEx);
+
+            finish();
+        });
+
+        mBuilder.setView(mView);
+        AlertDialog dialog = mBuilder.create();
+        dialog.show();
+    }
+
 
 }

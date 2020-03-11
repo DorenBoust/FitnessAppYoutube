@@ -5,20 +5,17 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProviders;
 import androidx.vectordrawable.graphics.drawable.AnimatedVectorDrawableCompat;
 
-import android.content.Intent;
 import android.graphics.drawable.AnimatedVectorDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.animation.AnimationUtils;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.example.fitnessapp.keys.KeysSPExercise;
 import com.example.fitnessapp.keys.KeysFirebaseStore;
 import com.example.fitnessapp.keys.KeysUserFragment;
 import com.example.fitnessapp.main.ArticlesFragment;
@@ -26,10 +23,7 @@ import com.example.fitnessapp.main.DietFragment;
 import com.example.fitnessapp.main.FitnessFragment;
 import com.example.fitnessapp.main.SettingsFragment;
 import com.example.fitnessapp.main.StatusFragment;
-import com.example.fitnessapp.main.StatusViewModel;
 import com.example.fitnessapp.user.AsyncJSON;
-import com.example.fitnessapp.user.DietProcessRaw;
-import com.example.fitnessapp.user.DietProcessTab;
 import com.example.fitnessapp.user.User;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
@@ -37,9 +31,7 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
-import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
@@ -100,24 +92,26 @@ public class MainActivity extends AppCompatActivity {
         iconLineSetting = findViewById(R.id.iconline_setting);
 
 
-        userJsonLiveData.observe(this, new Observer<User>() {
-            @Override
-            public void onChanged(User user) {
-                userObject = user;
-                Bundle bundle = new Bundle();
-                bundle.putSerializable(KeysUserFragment.USER_DATA_TO_FRAGMENT, userObject);
-                StatusFragment statusFragment = new StatusFragment();
-                statusFragment.setArguments(bundle);
+
+       userJsonLiveData.observe(this, new Observer<User>() {
+           @Override
+           public void onChanged(User user) {
+               userObject = user;
+               Bundle bundle = new Bundle();
+               bundle.putSerializable(KeysUserFragment.USER_DATA_TO_FRAGMENT, userObject);
+               StatusFragment statusFragment = new StatusFragment();
+               statusFragment.setArguments(bundle);
 
 
-                splash.setAnimation(AnimationUtils.loadAnimation(MainActivity.this,R.anim.faidout));
-                splash.setVisibility(View.INVISIBLE);
-                menuBar.setAnimation(AnimationUtils.loadAnimation(MainActivity.this,R.anim.faidin));
-                menuBar.setVisibility(View.VISIBLE);
-                getSupportFragmentManager().beginTransaction().setCustomAnimations(R.anim.faidin,R.anim.faidout).replace(R.id.mainFragment, statusFragment).commit();
+               splash.setAnimation(AnimationUtils.loadAnimation(MainActivity.this, R.anim.faidout));
+               splash.setVisibility(View.INVISIBLE);
+               menuBar.setAnimation(AnimationUtils.loadAnimation(MainActivity.this, R.anim.faidin));
+               menuBar.setVisibility(View.VISIBLE);
+               getSupportFragmentManager().beginTransaction().setCustomAnimations(R.anim.faidin, R.anim.faidout).replace(R.id.mainFragment, statusFragment).commit();
 
-            }
-        });
+           }
+       });
+
 
 
 

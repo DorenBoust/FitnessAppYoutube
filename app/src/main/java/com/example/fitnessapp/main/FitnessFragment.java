@@ -3,7 +3,9 @@ package com.example.fitnessapp.main;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.lifecycle.ViewModelProviders;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -20,6 +22,7 @@ import android.view.ViewGroup;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.SeekBar;
 import android.widget.TextSwitcher;
 import android.widget.TextView;
 import android.widget.ViewSwitcher;
@@ -28,6 +31,7 @@ import com.airbnb.lottie.LottieAnimationView;
 import com.example.fitnessapp.MainActivity;
 import com.example.fitnessapp.R;
 import com.example.fitnessapp.keys.KeysIntents;
+import com.example.fitnessapp.keys.KeysSPExercise;
 import com.example.fitnessapp.keys.KeysUserFragment;
 import com.example.fitnessapp.models.CustomMethods;
 import com.example.fitnessapp.user.Day;
@@ -69,6 +73,9 @@ public class FitnessFragment extends Fragment {
     private TextView dayOffName;
     private LottieAnimationView lottieAnimationDayOff;
 
+    //resume Exercise
+    private SeekBar exersiceProgressBar;
+
 
 
 
@@ -76,6 +83,8 @@ public class FitnessFragment extends Fragment {
     public static FitnessFragment newInstance() {
         return new FitnessFragment();
     }
+
+
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
@@ -97,6 +106,9 @@ public class FitnessFragment extends Fragment {
         dayOffName = v.findViewById(R.id.fitness_tv_dayoff_dayName);
         lottieAnimationDayOff = v.findViewById(R.id.lottie_dayOff);
 
+        exersiceProgressBar = v.findViewById(R.id.training_progress);
+
+
 
 
 
@@ -104,6 +116,25 @@ public class FitnessFragment extends Fragment {
         days = user.getDays();
 
         mainDayEx(days);
+
+
+        //SharedPreferences from exercise Activity
+        SharedPreferences sharedPreferences = this.getActivity().getSharedPreferences(KeysSPExercise.EXERCISE_NAME, Context.MODE_PRIVATE);
+
+        int spNumberOfExercises = sharedPreferences.getInt(KeysSPExercise.NUMBER_OF_EXERCISES, 6);
+        exersiceProgressBar.setMax(spNumberOfExercises);
+
+        int spCorrectExercise = sharedPreferences.getInt(KeysSPExercise.CORRECT_EXERCISE, 0);
+        exersiceProgressBar.setProgress(spCorrectExercise);
+
+        System.out.println("SHAREDPREFERCENCE  = " + spCorrectExercise);
+        if (spCorrectExercise != 0){
+
+            exersiceProgressBar.setVisibility(View.VISIBLE);
+
+        } else {
+            exersiceProgressBar.setVisibility(View.INVISIBLE);
+        }
 
         //recyclerView
         final RecyclerView recyclerView = v.findViewById(R.id.fitness_recyclerView);

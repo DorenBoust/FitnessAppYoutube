@@ -58,6 +58,16 @@
             app:layout_constraintEnd_toEndOf="@+id/tv_ex_activity_title_day"
             app:layout_constraintStart_toStartOf="@+id/tv_ex_activity_title_day"
             app:layout_constraintTop_toTopOf="@+id/guideline28" />
+
+        <Button
+            android:id="@+id/stop_workout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="עצור את האימון"
+            app:layout_constraintBottom_toBottomOf="@+id/tv_ex_activity_title_day"
+            app:layout_constraintEnd_toStartOf="@+id/tv_ex_activity_title_day"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/tv_ex_activity_title_day" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <TextView
