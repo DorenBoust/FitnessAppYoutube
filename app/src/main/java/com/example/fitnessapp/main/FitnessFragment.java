@@ -17,6 +17,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.os.CountDownTimer;
 import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AnimationUtils;
@@ -28,7 +29,6 @@ import android.widget.TextView;
 import android.widget.ViewSwitcher;
 
 import com.airbnb.lottie.LottieAnimationView;
-import com.example.fitnessapp.MainActivity;
 import com.example.fitnessapp.R;
 import com.example.fitnessapp.keys.KeysIntents;
 import com.example.fitnessapp.keys.KeysSPExercise;
@@ -44,7 +44,6 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 public class FitnessFragment extends Fragment {
 
@@ -75,9 +74,6 @@ public class FitnessFragment extends Fragment {
 
     //resume Exercise
     private SeekBar exersiceProgressBar;
-    private ConstraintLayout exInnerLayout;
-
-
 
 
 
@@ -90,6 +86,16 @@ public class FitnessFragment extends Fragment {
     public void onResume() {
         super.onResume();
         sharedPreference();
+        if (sharedPreferenceFinish() == 99){
+            dayOffName.setText(CustomMethods.convertDateToHebrew(correctDay));
+            lottieAnimationDayOff.setAnimation(R.raw.finish_workout);
+            lottieAnimationDayOff.playAnimation();
+            mainDayLayout.setVisibility(View.INVISIBLE);
+            mainDayLayoutDayOff.setVisibility(View.VISIBLE);
+            mainDayLayoutDayOff.setAnimation(AnimationUtils.loadAnimation(getContext(),R.anim.enter_bottom_to_top));
+            return;
+        }
+
 
     }
 
@@ -114,12 +120,18 @@ public class FitnessFragment extends Fragment {
         lottieAnimationDayOff = v.findViewById(R.id.lottie_dayOff);
 
         exersiceProgressBar = v.findViewById(R.id.training_progress);
-        exInnerLayout = v.findViewById(R.id.fitness_main_ex_layout_inner);
+
+        //disable change progressBar by user
+        exersiceProgressBar.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                return true;
+            }
+        });
 
 
 
-
-
+        //get Data and start
         user = (User) getArguments().getSerializable(KeysUserFragment.USER_DATA_TO_FRAGMENT);
         days = user.getDays();
 
@@ -177,11 +189,28 @@ public class FitnessFragment extends Fragment {
 
         if (!findDayName.contains(correctDay)){
             dayOffName.setText(CustomMethods.convertDateToHebrew(correctDay));
+            lottieAnimationDayOff.setAnimation(R.raw.day_off);
             lottieAnimationDayOff.playAnimation();
             mainDayLayout.setVisibility(View.INVISIBLE);
             mainDayLayoutDayOff.setAnimation(AnimationUtils.loadAnimation(getContext(),R.anim.enter_bottom_to_top));
             return;
         }
+
+
+        //reset sharedpreferance when day over
+        if (!getSharedPreferenceDay().equals(correctDay)){
+            resetSharedPreferance();
+        }
+
+        //if user allready the workout today
+        if (sharedPreferenceFinish() == 99){
+            dayOffName.setText(CustomMethods.convertDateToHebrew(correctDay));
+            lottieAnimationDayOff.playAnimation();
+            mainDayLayout.setVisibility(View.INVISIBLE);
+            mainDayLayoutDayOff.setAnimation(AnimationUtils.loadAnimation(getContext(),R.anim.enter_bottom_to_top));
+            return;
+        }
+
 
         //have practice
         for (Day day : daysList) {
@@ -190,8 +219,12 @@ public class FitnessFragment extends Fragment {
                 mainDayLayout.setAnimation(AnimationUtils.loadAnimation(getContext(),R.anim.enter_bottom_to_top));
                 tvMainDayName.setText(CustomMethods.convertDateToHebrew(day.getDayName()));
                 getInnerExParameters(day);
+
+                setSharedPreferenceDay();
             }
         }
+
+
     }
 
     private void getInnerExParameters(Day day){
@@ -273,6 +306,7 @@ public class FitnessFragment extends Fragment {
         int spCorrectExercise = sharedPreferences.getInt(KeysSPExercise.CORRECT_EXERCISE, 0);
         exersiceProgressBar.setProgress(spCorrectExercise);
 
+
         System.out.println("SHAREDPREFERCENCE  = " + spCorrectExercise);
         if (spCorrectExercise != 0){
 
@@ -290,5 +324,43 @@ public class FitnessFragment extends Fragment {
             exersiceProgressBar.setVisibility(View.INVISIBLE);
         }
     }
+
+    private int sharedPreferenceFinish(){
+        SharedPreferences sharedPreferences = this.getActivity().getSharedPreferences(KeysSPExercise.EXERCISE_NAME, Context.MODE_PRIVATE);
+        int spCorrectExercise = sharedPreferences.getInt(KeysSPExercise.CORRECT_EXERCISE, 0);
+        return spCorrectExercise;
+
+    }
+
+    private void setSharedPreferenceDay(){
+
+        SharedPreferences sharedPreferences = this.getActivity().getSharedPreferences(KeysSPExercise.EXERCISE_NAME, Context.MODE_PRIVATE);
+
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString(KeysSPExercise.CORRECT_DAY, correctDay);
+
+        editor.apply();
+
+    }
+
+    private String getSharedPreferenceDay(){
+        SharedPreferences sharedPreferences = this.getActivity().getSharedPreferences(KeysSPExercise.EXERCISE_NAME, Context.MODE_PRIVATE);
+
+        String correctDay = sharedPreferences.getString(KeysSPExercise.CORRECT_DAY, "null");
+
+        return correctDay;
+    }
+
+    private void resetSharedPreferance(){
+        SharedPreferences sharedPreferences = this.getActivity().getSharedPreferences(KeysSPExercise.EXERCISE_NAME, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+
+        editor.putInt(KeysSPExercise.NUMBER_OF_EXERCISES, 6);
+        editor.putInt(KeysSPExercise.CORRECT_EXERCISE, 0);
+
+        editor.apply();
+
+    }
+
 
 }
