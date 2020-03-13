@@ -273,6 +273,18 @@
             app:layout_constraintEnd_toEndOf="@+id/fitness_main_ex_layout_inner"
             app:layout_constraintStart_toStartOf="@+id/fitness_main_ex_layout_inner" />
 
+        <com.airbnb.lottie.LottieAnimationView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/lottie_animation_load_workout"
+            app:lottie_rawRes="@raw/new_animation_register"
+            app:lottie_loop="true"
+            android:visibility="invisible"
+            app:layout_constraintBottom_toBottomOf="@+id/fitness_btn_start"
+            app:layout_constraintEnd_toEndOf="@+id/fitness_btn_start"
+            app:layout_constraintStart_toStartOf="@+id/fitness_btn_start"
+            app:layout_constraintTop_toBottomOf="@+id/training_progress" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.recyclerview.widget.RecyclerView

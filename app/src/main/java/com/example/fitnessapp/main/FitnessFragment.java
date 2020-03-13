@@ -60,6 +60,7 @@ public class FitnessFragment extends Fragment {
     private TextView tvInnerExNumberTEXTVIEW;
     private ImageView ivInnerImage;
     private Button btnMainStart;
+    private LottieAnimationView lottieAnimationLoadWorkout;
 
     //correct day
     private SimpleDateFormat sdf = new SimpleDateFormat("EEEE");
@@ -82,10 +83,14 @@ public class FitnessFragment extends Fragment {
     }
 
 
+
     @Override
     public void onResume() {
         super.onResume();
         sharedPreference();
+        btnMainStart.setVisibility(View.VISIBLE);
+        lottieAnimationLoadWorkout.setVisibility(View.INVISIBLE);
+
         if (sharedPreferenceFinish() == 99){
             dayOffName.setText(CustomMethods.convertDate(correctDay));
             lottieAnimationDayOff.setAnimation(R.raw.finish_workout);
@@ -108,6 +113,8 @@ public class FitnessFragment extends Fragment {
         tvMainNumberOfEx = v.findViewById(R.id.tv_fitness_main_ex_day_inner_exNumber);
         tvMainEsTime = v.findViewById(R.id.tv_fitness_main_ex_day_esTime);
         btnMainStart = v.findViewById(R.id.fitness_btn_start);
+        lottieAnimationDayOff = v.findViewById(R.id.lottie_dayOff);
+        lottieAnimationLoadWorkout = v.findViewById(R.id.lottie_animation_load_workout);
         switcherInnerExName = v.findViewById(R.id.tv_fitness_main_ex_day_exName);
         switcherInnerExNumber = v.findViewById(R.id.tv_fitness_main_ex_day_exNumber);
         ivInnerImage = v.findViewById(R.id.iv_fitness_main_ex_day_image);
@@ -154,6 +161,12 @@ public class FitnessFragment extends Fragment {
 
         //start Button on main ex
         btnMainStart.setOnClickListener(btn->{
+
+            btnMainStart.setVisibility(View.INVISIBLE);
+            lottieAnimationLoadWorkout.setVisibility(View.VISIBLE);
+            lottieAnimationLoadWorkout.playAnimation();
+
+
             List<Exercise> exercisesData = new ArrayList<>();
             String sendDayName = "";
             for (int i = 0; i < days.size() ; i++) {
