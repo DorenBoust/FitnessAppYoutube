@@ -49,6 +49,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -102,15 +103,17 @@ public class ExersiceActivity extends AppCompatActivity {
 
 
     //history
-    private ImageView btnHistory;
+    private TextView btnHistory;
     private ConstraintLayout historyLayout;
     private boolean historyClicked = false;
     private TextView tvDateHistory;
+    private TextView tvDayHistory;
     private int counterHistoryBTN = 0;
     int getCorrectHistory;
     private List<ExerciseHistory> exerciseHistoryRoot;
     private ImageView btnHistoryBack;
     private ImageView btnHistoryNext;
+    private TextView recyclerTitle;
 
 
     //youtube
@@ -119,7 +122,7 @@ public class ExersiceActivity extends AppCompatActivity {
     private YouTubePlayerView youTubePlayerView;
 
     //stop workout
-    private Button stopWorkoutBTN;
+    private ImageView stopWorkoutBTN;
     private Button dialogYesBTN;
 
 
@@ -155,8 +158,10 @@ public class ExersiceActivity extends AppCompatActivity {
         btnHistory = findViewById(R.id.history_button);
         historyLayout = findViewById(R.id.layout_history);
         tvDateHistory = findViewById(R.id.date_history_title);
+        tvDayHistory = findViewById(R.id.day_history_title);
         btnHistoryBack = findViewById(R.id.history_back);
         btnHistoryNext = findViewById(R.id.history_next);
+        recyclerTitle = findViewById(R.id.tv_ex_activity_title_exName2);
 
         youtubeBTN = findViewById(R.id.iv_ex_activity_details_playBTN);
         youtubeLayout = findViewById(R.id.youtubeLayout);
@@ -195,6 +200,7 @@ public class ExersiceActivity extends AppCompatActivity {
         ExersiceFieldRecyclerAdapter adapter = new ExersiceFieldRecyclerAdapter(exercise,getLayoutInflater());
         System.out.println("number of ex " + exercise);
         recyclerViewComponent.setLayoutManager(new LinearLayoutManager(this));
+        recyclerViewComponent.setLayoutAnimation(AnimationUtils.loadLayoutAnimation(this,R.anim.layout_ex_activity_recycler_field));
         recyclerViewComponent.setAdapter(adapter);
 
         //regular component
@@ -283,6 +289,7 @@ public class ExersiceActivity extends AppCompatActivity {
                 Exercise exerciseIN = exercises.get(++counterEx);
                 ExersiceFieldRecyclerAdapter adapterIN = new ExersiceFieldRecyclerAdapter(exerciseIN, getLayoutInflater());
                 recyclerViewComponent.setLayoutManager(new LinearLayoutManager(this));
+                recyclerViewComponent.setLayoutAnimation(AnimationUtils.loadLayoutAnimation(this,R.anim.layout_ex_activity_recycler_field));
                 recyclerViewComponent.setAdapter(adapterIN);
 
 
@@ -362,7 +369,10 @@ public class ExersiceActivity extends AppCompatActivity {
 
             System.out.println(exersixeOneRawHistories);
 
-            ExerciseHistory exerciseHistory = new ExerciseHistory("17/02/2019", exersixeOneRawHistories);
+            String currentDate = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault()).format(new Date());
+            System.out.println();
+
+            ExerciseHistory exerciseHistory = new ExerciseHistory(currentDate, exersixeOneRawHistories);
             List<ExerciseHistory> exerciseHistoryList = new ArrayList<>();
             exerciseHistoryList.add(exerciseHistory);
 
@@ -370,7 +380,7 @@ public class ExersiceActivity extends AppCompatActivity {
 
             System.out.println(exerciseHistory);
             Task<Void> saveOnDB = fStore.collection(KeysFirebaseStore.EXERCISE_HISTORY_DATA).document(fAuth.getUid())
-                    .collection(tvExName.getText().toString()).document("12.12.12").set(exerciseHistoryToFIreBase);
+                    .collection(tvExName.getText().toString()).document(currentDate).set(exerciseHistoryToFIreBase);
 
 
             editSharedPreferance(99);
@@ -411,6 +421,8 @@ public class ExersiceActivity extends AppCompatActivity {
                 layoutOfRecyclerFieldDetails.setVisibility(View.INVISIBLE);
                 layoutOfRecyclerFieldDetails.setAnimation(AnimationUtils.loadAnimation(this, R.anim.faidout));
 
+                recyclerTitle.setText("היסטוריה");
+                btnHistory.setText("מלא נתונים");
                 historyClicked = true;
 
             } else {
@@ -420,6 +432,10 @@ public class ExersiceActivity extends AppCompatActivity {
 
                 historyLayout.setVisibility(View.INVISIBLE);
                 historyLayout.setAnimation(AnimationUtils.loadAnimation(this,R.anim.faidout));
+
+                recyclerTitle.setText("מלא נתונים");
+                btnHistory.setText("הצג היסטוריה");
+
                 historyClicked = false;
 
             }
@@ -671,6 +687,23 @@ public class ExersiceActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(adapter);
         tvDateHistory.setText(exerciseHistories.get(dateCounter).getDate());
+
+        SimpleDateFormat dayNameFormat = new SimpleDateFormat("dd-MM-yyyy");
+        try {
+            Date dayName = dayNameFormat.parse(tvDateHistory.getText().toString());
+            SimpleDateFormat outFormat = new SimpleDateFormat("EEEE");
+            String dayNameString = outFormat.format(dayName);
+
+            if (!dayNameString.contains("י")){
+                tvDayHistory.setText(CustomMethods.convertDate(dayNameString));
+                return;
+            }
+
+            tvDayHistory.setText(dayNameString);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
 
     }
 

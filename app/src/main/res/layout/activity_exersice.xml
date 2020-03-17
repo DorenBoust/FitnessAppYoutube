@@ -59,15 +59,27 @@
             app:layout_constraintStart_toStartOf="@+id/tv_ex_activity_title_day"
             app:layout_constraintTop_toTopOf="@+id/guideline28" />
 
-        <Button
+        <ImageView
             android:id="@+id/stop_workout"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="עצור את האימון"
             app:layout_constraintBottom_toBottomOf="@+id/tv_ex_activity_title_day"
             app:layout_constraintEnd_toStartOf="@+id/tv_ex_activity_title_day"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/tv_ex_activity_title_day" />
+            app:layout_constraintTop_toTopOf="@+id/tv_ex_activity_title_day"
+            app:srcCompat="@drawable/ic_pause_24dp" />
+
+        <TextView
+            android:id="@+id/stop_workout_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/open_sans_hebrew_light"
+            android:text="עצור אימון"
+            android:textSize="10sp"
+            app:layout_constraintEnd_toEndOf="@+id/stop_workout"
+            app:layout_constraintStart_toStartOf="@+id/stop_workout"
+            app:layout_constraintTop_toBottomOf="@+id/stop_workout" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <TextView
@@ -425,25 +437,29 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/layout_field_details_for_history">
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/history_recyclerview"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:layout_marginTop="8dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/date_history_title" />
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline47"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.18" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline48"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.5" />
 
         <ImageView
             android:id="@+id/history_next"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="24dp"
             android:visibility="invisible"
-            app:layout_constraintBottom_toBottomOf="@+id/date_history_title"
-            app:layout_constraintStart_toEndOf="@+id/date_history_title"
-            app:layout_constraintTop_toTopOf="@+id/date_history_title"
+            app:layout_constraintBottom_toTopOf="@+id/guideline47"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/guideline48"
+            app:layout_constraintTop_toTopOf="@+id/day_history_title"
             app:srcCompat="@drawable/next_arrow_green"
             tools:visibility="visible" />
 
@@ -451,33 +467,54 @@
             android:id="@+id/history_back"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="24dp"
-            app:layout_constraintBottom_toBottomOf="@+id/date_history_title"
-            app:layout_constraintEnd_toStartOf="@+id/date_history_title"
-            app:layout_constraintTop_toTopOf="@+id/date_history_title"
+            app:layout_constraintBottom_toTopOf="@+id/guideline47"
+            app:layout_constraintEnd_toStartOf="@+id/guideline48"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/day_history_title"
             app:srcCompat="@drawable/back_arrow_green" />
+
+        <TextView
+            android:id="@+id/day_history_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="יום שלישי"
+            app:layout_constraintEnd_toEndOf="@+id/date_history_title"
+            app:layout_constraintStart_toStartOf="@+id/date_history_title"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/date_history_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
             android:fontFamily="@font/open_sans_hebrew_bold"
             android:text="3-03-2020"
+            android:textSize="10sp"
+            app:layout_constraintBottom_toTopOf="@+id/guideline47"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toBottomOf="@+id/day_history_title" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/history_recyclerview"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/guideline47" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <ImageView
+    <TextView
         android:id="@+id/history_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:text="הצג היסטוריה"
+        android:textColor="@color/lightGreen"
         app:layout_constraintBottom_toBottomOf="@+id/tv_ex_activity_title_exName2"
         app:layout_constraintEnd_toStartOf="@+id/tv_ex_activity_title_exName2"
         app:layout_constraintStart_toStartOf="parent"
-        app:srcCompat="@drawable/back_arrow_green" />
+        app:layout_constraintTop_toTopOf="@+id/tv_ex_activity_title_exName2" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/youtubeLayout"
@@ -491,14 +528,13 @@
         app:layout_constraintTop_toTopOf="@+id/ex_activity_details">
 
         <com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views.YouTubePlayerView
-            android:layout_width="0dp"
             android:id="@+id/youtubeVideoPlayer"
+            android:layout_width="0dp"
             android:layout_height="0dp"
             app:layout_constraintBottom_toTopOf="@+id/guideline36"
             app:layout_constraintEnd_toStartOf="@+id/guideline34"
             app:layout_constraintStart_toStartOf="@+id/guideline33"
-            app:layout_constraintTop_toTopOf="@+id/guideline35"
-        ></com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views.YouTubePlayerView>
+            app:layout_constraintTop_toTopOf="@+id/guideline35"></com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views.YouTubePlayerView>
 
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/guideline33"
@@ -527,6 +563,7 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             app:layout_constraintGuide_percent="0.7" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 
