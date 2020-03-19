@@ -31,7 +31,7 @@ import android.widget.ViewSwitcher;
 import com.airbnb.lottie.LottieAnimationView;
 import com.example.fitnessapp.R;
 import com.example.fitnessapp.keys.KeysIntents;
-import com.example.fitnessapp.keys.KeysSPExercise;
+import com.example.fitnessapp.keys.KeysSharedPrefercence;
 import com.example.fitnessapp.keys.KeysUserFragment;
 import com.example.fitnessapp.models.CustomMethods;
 import com.example.fitnessapp.user.Day;
@@ -317,12 +317,12 @@ public class FitnessFragment extends Fragment {
     }
 
     private void sharedPreference(){
-        SharedPreferences sharedPreferences = this.getActivity().getSharedPreferences(KeysSPExercise.EXERCISE_NAME, Context.MODE_PRIVATE);
+        SharedPreferences sharedPreferences = this.getActivity().getSharedPreferences(KeysSharedPrefercence.USER_SHAREDPREFERCENCE_NAME, Context.MODE_PRIVATE);
 
-        int spNumberOfExercises = sharedPreferences.getInt(KeysSPExercise.NUMBER_OF_EXERCISES, 6);
+        int spNumberOfExercises = sharedPreferences.getInt(KeysSharedPrefercence.NUMBER_OF_EXERCISES, 6);
         exersiceProgressBar.setMax(spNumberOfExercises-1);
 
-        int spCorrectExercise = sharedPreferences.getInt(KeysSPExercise.CORRECT_EXERCISE, 0);
+        int spCorrectExercise = sharedPreferences.getInt(KeysSharedPrefercence.CORRECT_EXERCISE, 0);
         exersiceProgressBar.setProgress(spCorrectExercise);
 
 
@@ -345,37 +345,37 @@ public class FitnessFragment extends Fragment {
     }
 
     private int sharedPreferenceFinish(){
-        SharedPreferences sharedPreferences = this.getActivity().getSharedPreferences(KeysSPExercise.EXERCISE_NAME, Context.MODE_PRIVATE);
-        int spCorrectExercise = sharedPreferences.getInt(KeysSPExercise.CORRECT_EXERCISE, 0);
+        SharedPreferences sharedPreferences = this.getActivity().getSharedPreferences(KeysSharedPrefercence.USER_SHAREDPREFERCENCE_NAME, Context.MODE_PRIVATE);
+        int spCorrectExercise = sharedPreferences.getInt(KeysSharedPrefercence.CORRECT_EXERCISE, 0);
         return spCorrectExercise;
 
     }
 
     private void setSharedPreferenceDay(){
 
-        SharedPreferences sharedPreferences = this.getActivity().getSharedPreferences(KeysSPExercise.EXERCISE_NAME, Context.MODE_PRIVATE);
+        SharedPreferences sharedPreferences = this.getActivity().getSharedPreferences(KeysSharedPrefercence.USER_SHAREDPREFERCENCE_NAME, Context.MODE_PRIVATE);
 
         SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putString(KeysSPExercise.CORRECT_DAY, correctDay);
+        editor.putString(KeysSharedPrefercence.EXERCISE_CORRECT_DAY, correctDay);
 
         editor.apply();
 
     }
 
     private String getSharedPreferenceDay(){
-        SharedPreferences sharedPreferences = this.getActivity().getSharedPreferences(KeysSPExercise.EXERCISE_NAME, Context.MODE_PRIVATE);
+        SharedPreferences sharedPreferences = this.getActivity().getSharedPreferences(KeysSharedPrefercence.USER_SHAREDPREFERCENCE_NAME, Context.MODE_PRIVATE);
 
-        String correctDay = sharedPreferences.getString(KeysSPExercise.CORRECT_DAY, "null");
+        String correctDay = sharedPreferences.getString(KeysSharedPrefercence.EXERCISE_CORRECT_DAY, "null");
 
         return correctDay;
     }
 
     private void resetSharedPreferance(){
-        SharedPreferences sharedPreferences = this.getActivity().getSharedPreferences(KeysSPExercise.EXERCISE_NAME, Context.MODE_PRIVATE);
+        SharedPreferences sharedPreferences = this.getActivity().getSharedPreferences(KeysSharedPrefercence.USER_SHAREDPREFERCENCE_NAME, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
 
-        editor.putInt(KeysSPExercise.NUMBER_OF_EXERCISES, 6);
-        editor.putInt(KeysSPExercise.CORRECT_EXERCISE, 0);
+        editor.putInt(KeysSharedPrefercence.NUMBER_OF_EXERCISES, 6);
+        editor.putInt(KeysSharedPrefercence.CORRECT_EXERCISE, 0);
 
         editor.apply();
 

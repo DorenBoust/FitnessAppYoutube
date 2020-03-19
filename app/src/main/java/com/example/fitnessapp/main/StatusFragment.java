@@ -70,6 +70,7 @@ public class StatusFragment extends Fragment implements Serializable {
 
 
         user = (User) getArguments().getSerializable(KeysUserFragment.USER_DATA_TO_FRAGMENT);
+        System.out.println("USER ON STATUS - " + user);
         extractChart(user);
 
         tvStartWeight = v.findViewById(R.id.statusFragment_tv__startData_weight);

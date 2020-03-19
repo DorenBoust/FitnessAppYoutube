@@ -29,7 +29,7 @@ import android.widget.TextView;
 import com.example.fitnessapp.R;
 import com.example.fitnessapp.keys.KeysFirebaseStore;
 import com.example.fitnessapp.keys.KeysIntents;
-import com.example.fitnessapp.keys.KeysSPExercise;
+import com.example.fitnessapp.keys.KeysSharedPrefercence;
 import com.example.fitnessapp.models.CustomMethods;
 import com.example.fitnessapp.user.Exercise;
 import com.example.fitnessapp.user.ExerciseHistory;
@@ -172,9 +172,9 @@ public class ExersiceActivity extends AppCompatActivity {
 
 
 
-        SharedPreferences sharedPreferences2 = getSharedPreferences(KeysSPExercise.EXERCISE_NAME, Context.MODE_PRIVATE);
+        SharedPreferences sharedPreferences2 = getSharedPreferences(KeysSharedPrefercence.USER_SHAREDPREFERCENCE_NAME, Context.MODE_PRIVATE);
 
-        int spCorrectExersice = sharedPreferences2.getInt(KeysSPExercise.CORRECT_EXERCISE, 6);
+        int spCorrectExersice = sharedPreferences2.getInt(KeysSharedPrefercence.CORRECT_EXERCISE, 6);
         System.out.println("TEST SP 1 =" + spCorrectExersice);
 
         if (spCorrectExersice != 0){
@@ -740,21 +740,21 @@ public class ExersiceActivity extends AppCompatActivity {
     }
 
     private void editSharedPreferance(List<Exercise> exercises){
-        SharedPreferences sharedPreferences = getSharedPreferences(KeysSPExercise.EXERCISE_NAME, MODE_PRIVATE);
+        SharedPreferences sharedPreferences = getSharedPreferences(KeysSharedPrefercence.USER_SHAREDPREFERCENCE_NAME, MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
 
-        editor.putInt(KeysSPExercise.NUMBER_OF_EXERCISES, exercises.size());
-        editor.putInt(KeysSPExercise.CORRECT_EXERCISE, counterEx);
+        editor.putInt(KeysSharedPrefercence.NUMBER_OF_EXERCISES, exercises.size());
+        editor.putInt(KeysSharedPrefercence.CORRECT_EXERCISE, counterEx);
 
         editor.apply();
 
     }
 
     private void editSharedPreferance(int finishWorkout){
-        SharedPreferences sharedPreferences = getSharedPreferences(KeysSPExercise.EXERCISE_NAME, MODE_PRIVATE);
+        SharedPreferences sharedPreferences = getSharedPreferences(KeysSharedPrefercence.USER_SHAREDPREFERCENCE_NAME, MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
 
-        editor.putInt(KeysSPExercise.CORRECT_EXERCISE, finishWorkout);
+        editor.putInt(KeysSharedPrefercence.CORRECT_EXERCISE, finishWorkout);
 
         editor.apply();
 
