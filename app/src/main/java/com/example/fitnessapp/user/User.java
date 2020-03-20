@@ -21,8 +21,9 @@ public class User implements Serializable {
     private String limitation;
     private List<Day> days;
     private DietProcessTab dietTable;
+    private Diet diet;
 
-    public User(String name, String integrationCode, Date bDay, double height, String job, String phoneNumber, String email, String registerEmail, String goal, String limitation, List<Day> days, DietProcessTab dietTable) {
+    public User(String name, String integrationCode, Date bDay, double height, String job, String phoneNumber, String email, String registerEmail, String goal, String limitation, List<Day> days, DietProcessTab dietTable, Diet diet) {
         this.name = name;
         this.integrationCode = integrationCode;
         this.bDay = bDay;
@@ -35,6 +36,7 @@ public class User implements Serializable {
         this.limitation = limitation;
         this.days = days;
         this.dietTable = dietTable;
+        this.diet = diet;
     }
     public String getName() {
         return name;
@@ -102,13 +104,17 @@ public class User implements Serializable {
     public void setDays(List<Day> days) {
         this.days = days;
     }
-
     public DietProcessTab getDietTable() {
         return dietTable;
     }
-
     public void setDietTable(DietProcessTab dietTable) {
         this.dietTable = dietTable;
+    }
+    public Diet getDiet() {
+        return diet;
+    }
+    public void setDiet(Diet diet) {
+        this.diet = diet;
     }
 
     @Override
@@ -116,8 +122,8 @@ public class User implements Serializable {
         return "User{" +
                 "name='" + name + '\'' +
                 ", integrationCode='" + integrationCode + '\'' +
-                ", bDay='" + bDay + '\'' +
-                ", height='" + height + '\'' +
+                ", bDay=" + bDay +
+                ", height=" + height +
                 ", job='" + job + '\'' +
                 ", phoneNumber='" + phoneNumber + '\'' +
                 ", email='" + email + '\'' +
@@ -126,8 +132,8 @@ public class User implements Serializable {
                 ", limitation='" + limitation + '\'' +
                 ", days=" + days +
                 ", dietTable=" + dietTable +
+                ", diet=" + diet +
                 '}';
     }
-
 }
 

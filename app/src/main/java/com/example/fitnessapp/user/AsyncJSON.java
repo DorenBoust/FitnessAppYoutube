@@ -86,6 +86,7 @@ public class AsyncJSON extends AsyncTask<String, Integer, User>{
             String goal = acf.getString("goal");
             String limitation = acf.getString("limitation");
 
+            //training/fitness/workout
             JSONObject training = acf.getJSONObject("training");
             String[] daysName = {"sunday", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday"};
 
@@ -95,6 +96,8 @@ public class AsyncJSON extends AsyncTask<String, Integer, User>{
                 String numberOfExercies = day.getString("numberOfExercies");
                 int numberOfExerciesInt = Integer.parseInt(numberOfExercies);
                 System.out.println(daysName[i] + " " + numberOfExerciesInt);
+
+                //extract exercises
                 List<Exercise> exercises = new ArrayList<>();
                 for (int j = 0; j < numberOfExerciesInt ; j++) {
                     String exNumber = "ex" + (j+1);
@@ -151,6 +154,7 @@ public class AsyncJSON extends AsyncTask<String, Integer, User>{
 
             }
 
+            //diet Table
             JSONObject process = acf.getJSONObject("prosess");
             JSONObject table = process.getJSONObject("table");
             JSONArray body = table.getJSONArray("body");
@@ -184,12 +188,71 @@ public class AsyncJSON extends AsyncTask<String, Integer, User>{
 
             }
 
+            //diet menu
+            JSONObject diet = acf.getJSONObject("diet");
+            String numberOfMeals = diet.getString("number_of_meals");
+            int numberOfMealsInt = Integer.parseInt(numberOfMeals);
+            System.out.println("numberOfMealsInt " + numberOfMealsInt);
+
+            List<Meal> meals = new ArrayList<>();
+
+            for (int i = 0; i < numberOfMealsInt; i++) {
+
+                String mealNumber = "meal_" + (i+1);
+                JSONObject mealJSONObject = diet.getJSONObject(mealNumber);
+                System.out.println("mealNumber" + mealNumber);
+
+                String mealName = mealJSONObject.getString("meal_name");
+                System.out.println("mealName " + mealName);
+
+
+                String mealTime = mealJSONObject.getString("time");
+                String numberOfProduct = mealJSONObject.getString("number_of_products");
+
+                int numberOfProductInt = Integer.parseInt(numberOfProduct);
+                System.out.println("numberOfProductInt " + numberOfProductInt);
+
+                List<Product> products = new ArrayList<>();
+
+                JSONObject productJSONObject = mealJSONObject.getJSONObject("מרכיבים");
+
+                for (int j = 0; j < numberOfProductInt ; j++) {
+
+                    String productNumber = "product" + (j+1);
+                    System.out.println("productNumber " + productNumber);
+                    JSONObject productJsonObject = productJSONObject.getJSONObject(productNumber);
+
+                    String productName = productJsonObject.getString("product_name");
+                    System.out.println("productName " + productName);
+
+
+                    String unit = productJsonObject.getString("unit");
+                    String qty = productJsonObject.getString("qty");
+
+                    JSONArray alternativeJSONArray = productJsonObject.getJSONArray("alternative");
+
+                    List<String> alternatives = new ArrayList<>();
+
+                    for (int k = 0; k < alternativeJSONArray.length() ; k++) {
+                        String alternative = alternativeJSONArray.getString(k);
+                        alternatives.add(alternative);
+                    }
+
+                    products.add(new Product(productName, unit, qty, alternatives));
+
+                }
+
+                meals.add(new Meal(mealName, mealTime, numberOfProduct, products));
+            }
+
+            Diet dietFinal = new Diet(numberOfMealsInt, meals);
+
             fAuth = FirebaseAuth.getInstance();
             fStore = FirebaseFirestore.getInstance();
 
             DietProcessTab dietProcessTab = new DietProcessTab(dietRawList);
 
-            User user = new User(name,strings[0],bDayDate,heightDouble,job,phoneNumber,email,strings[1],goal,limitation,days, dietProcessTab);
+            User user = new User(name,strings[0],bDayDate,heightDouble,job,phoneNumber,email,strings[1],goal,limitation,days, dietProcessTab,dietFinal);
 
 
             //Save on FireBaseStore

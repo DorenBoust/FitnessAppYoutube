@@ -96,42 +96,8 @@ public class MainActivity extends AppCompatActivity {
         iconLineSetting = findViewById(R.id.iconline_setting);
 
 
+        jsonParser();
 
-        SharedPreferences sharedPreferences = getSharedPreferences(KeysSharedPrefercence.USER_SHAREDPREFERCENCE_NAME, MODE_PRIVATE);
-        Gson gson = new Gson();
-        String json = sharedPreferences.getString(KeysSharedPrefercence.SAVE_USER_OBJECT, null);
-        System.out.println("JSON NNN = " + json);
-
-        if (json != null) {
-            User user = gson.fromJson(json, User.class);
-            userObject = user;
-        }
-
-        int needUpdate = sharedPreferences.getInt(KeysSharedPrefercence.NEED_UPDATE, 0);
-
-        if (needUpdate != 0){
-
-            jsonParser();
-            SharedPreferences.Editor editor = sharedPreferences.edit();
-            editor.putInt(KeysSharedPrefercence.NEED_UPDATE, 0);
-            editor.apply();
-
-        } else if (json != null){
-            Bundle bundle = new Bundle();
-            bundle.putSerializable(KeysUserFragment.USER_DATA_TO_FRAGMENT, userObject);
-
-            StatusFragment statusFragment = new StatusFragment();
-            statusFragment.setArguments(bundle);
-
-            splash.setAnimation(AnimationUtils.loadAnimation(MainActivity.this, R.anim.faidout));
-            splash.setVisibility(View.INVISIBLE);
-            menuBar.setAnimation(AnimationUtils.loadAnimation(MainActivity.this, R.anim.faidin));
-            menuBar.setVisibility(View.VISIBLE);
-            getSupportFragmentManager().beginTransaction().setCustomAnimations(R.anim.faidin, R.anim.faidout).replace(R.id.mainFragment, statusFragment).commit();
-
-        } else {
-            jsonParser();
-        }
 
        userJsonLiveData.observe(this, new Observer<User>() {
            @Override
@@ -139,18 +105,8 @@ public class MainActivity extends AppCompatActivity {
                userObject = user;
                Bundle bundle = new Bundle();
                bundle.putSerializable(KeysUserFragment.USER_DATA_TO_FRAGMENT, userObject);
-
                StatusFragment statusFragment = new StatusFragment();
                statusFragment.setArguments(bundle);
-
-               SharedPreferences sharedPreferences = getSharedPreferences(KeysSharedPrefercence.USER_SHAREDPREFERCENCE_NAME, MODE_PRIVATE);
-               SharedPreferences.Editor editor = sharedPreferences.edit();
-               Gson gson = new Gson();
-               String json = gson.toJson(userObject);
-               editor.putString(KeysSharedPrefercence.SAVE_USER_OBJECT, json);
-               editor.apply();
-
-
 
 
                splash.setAnimation(AnimationUtils.loadAnimation(MainActivity.this, R.anim.faidout));

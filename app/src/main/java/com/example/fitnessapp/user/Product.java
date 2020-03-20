@@ -1,12 +1,14 @@
 package com.example.fitnessapp.user;
 
+import java.util.List;
+
 public class Product {
     private String productName;
     private String unit;
     private String qty;
-    private String alternative;
+    private List<String> alternative;
 
-    public Product(String productName, String unit, String qty, String alternative) {
+    public Product(String productName, String unit, String qty, List<String> alternative) {
         this.productName = productName;
         this.unit = unit;
         this.qty = qty;
@@ -31,10 +33,10 @@ public class Product {
     public void setQty(String qty) {
         this.qty = qty;
     }
-    public String getAlternative() {
+    public List<String> getAlternative() {
         return alternative;
     }
-    public void setAlternative(String alternative) {
+    public void setAlternative(List<String> alternative) {
         this.alternative = alternative;
     }
 

@@ -3,29 +3,29 @@ package com.example.fitnessapp.user;
 import java.util.List;
 
 public class Meal {
-    private String name;
-    private String time;
+    private String mealName;
+    private String mealTime;
     private String numberOfProduct;
     private List<Product> products;
 
-    public Meal(String name, String time, String numberOfProduct, List<Product> products) {
-        this.name = name;
-        this.time = time;
+    public Meal(String mealName, String mealTime, String numberOfProduct, List<Product> products) {
+        this.mealName = mealName;
+        this.mealTime = mealTime;
         this.numberOfProduct = numberOfProduct;
         this.products = products;
     }
 
     public String getName() {
-        return name;
+        return mealName;
     }
     public void setName(String name) {
-        this.name = name;
+        this.mealName = name;
     }
     public String getTime() {
-        return time;
+        return mealTime;
     }
     public void setTime(String time) {
-        this.time = time;
+        this.mealTime = time;
     }
     public String getNumberOfProduct() {
         return numberOfProduct;
@@ -43,8 +43,8 @@ public class Meal {
     @Override
     public String toString() {
         return "Meal{" +
-                "name='" + name + '\'' +
-                ", time='" + time + '\'' +
+                "name='" + mealName + '\'' +
+                ", mealTime='" + mealTime + '\'' +
                 ", numberOfProduct='" + numberOfProduct + '\'' +
                 ", products=" + products +
                 '}';

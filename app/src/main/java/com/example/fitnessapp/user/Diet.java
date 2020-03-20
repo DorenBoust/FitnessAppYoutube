@@ -3,18 +3,18 @@ package com.example.fitnessapp.user;
 import java.util.List;
 
 public class Diet {
-    private String numberOfMeals;
+    private int numberOfMeals;
     private List<Meal> meals;
 
-    public Diet(String numberOfMeals, List<Meal> meals) {
+    public Diet(int numberOfMeals, List<Meal> meals) {
         this.numberOfMeals = numberOfMeals;
         this.meals = meals;
     }
 
-    public String getNumberOfMeals() {
+    public int getNumberOfMeals() {
         return numberOfMeals;
     }
-    public void setNumberOfMeals(String numberOfMeals) {
+    public void setNumberOfMeals(int numberOfMeals) {
         this.numberOfMeals = numberOfMeals;
     }
     public List<Meal> getMeals() {

@@ -52,20 +52,6 @@ public class SettingsFragment extends Fragment {
             getActivity().onBackPressed();
         });
 
-        btnUpdate.setOnClickListener(btn->{
-
-
-            SharedPreferences sharedPreferences = this.getActivity().getSharedPreferences(KeysSharedPrefercence.USER_SHAREDPREFERCENCE_NAME, Context.MODE_PRIVATE);
-            SharedPreferences.Editor editor = sharedPreferences.edit();
-
-            editor.putInt(KeysSharedPrefercence.NEED_UPDATE, 1);
-            editor.apply();
-
-            Intent intent = new Intent(getContext(), MainActivity.class);
-            startActivity(intent);
-
-
-        });
 
         return v;
     }
