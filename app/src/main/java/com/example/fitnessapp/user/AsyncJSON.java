@@ -32,8 +32,10 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 public class AsyncJSON extends AsyncTask<String, Integer, User>{
 
@@ -194,6 +196,8 @@ public class AsyncJSON extends AsyncTask<String, Integer, User>{
             int numberOfMealsInt = Integer.parseInt(numberOfMeals);
             System.out.println("numberOfMealsInt " + numberOfMealsInt);
 
+            Set<String> namesOfProductToExtract = new HashSet<>();
+
             List<Meal> meals = new ArrayList<>();
 
             for (int i = 0; i < numberOfMealsInt; i++) {
@@ -223,11 +227,17 @@ public class AsyncJSON extends AsyncTask<String, Integer, User>{
                     JSONObject productJsonObject = productJSONObject.getJSONObject(productNumber);
 
                     String productName = productJsonObject.getString("product_name");
+                    String[] splitURLProductName = productName.split("/");
+
+
+                    namesOfProductToExtract.add(splitURLProductName[4]);
+
                     System.out.println("productName " + productName);
 
 
                     String unit = productJsonObject.getString("unit");
                     String qty = productJsonObject.getString("qty");
+
 
                     JSONArray alternativeJSONArray = productJsonObject.getJSONArray("alternative");
 
@@ -235,14 +245,78 @@ public class AsyncJSON extends AsyncTask<String, Integer, User>{
 
                     for (int k = 0; k < alternativeJSONArray.length() ; k++) {
                         String alternative = alternativeJSONArray.getString(k);
-                        alternatives.add(alternative);
+
+                        String[] splitURLAlternative = alternative.split("/");
+
+                        alternatives.add(splitURLAlternative[4]);
+                        namesOfProductToExtract.add(splitURLAlternative[4]);
                     }
 
-                    products.add(new Product(productName, unit, qty, alternatives));
+                    products.add(new Product(splitURLProductName[4], unit, qty, alternatives));
 
                 }
 
                 meals.add(new Meal(mealName, mealTime, numberOfProduct, products));
+            }
+
+            List<String> newNamsProductList = new ArrayList<>();
+            newNamsProductList.addAll(namesOfProductToExtract);
+
+
+            List<ProductDataBase> productDataBaseList = new ArrayList<>();
+
+            for (int i = 0; i <newNamsProductList.size() ; i++) {
+
+                String linkProduct = "http://appfitness.boust.me/wp-json/acf/v3/food?url_name=" + newNamsProductList.get(i);
+                System.out.println("linkProduct - " + linkProduct);
+                URL urlProduct = new URL(linkProduct);
+                HttpURLConnection conProduct = (HttpURLConnection) urlProduct.openConnection();
+
+                InputStream inputStreamProduct = conProduct.getInputStream();
+                BufferedReader readerProduct = new BufferedReader(new InputStreamReader(inputStreamProduct));
+
+                StringBuilder sbProduct = new StringBuilder();
+                String lineProduct = null;
+
+                while ((lineProduct = readerProduct.readLine()) != null){
+                    sbProduct.append(lineProduct);
+                }
+
+                String jsonProduct = sbProduct.toString();
+                System.out.println("JSON FOOD HEREEEEEEE!!!! - " + jsonProduct);
+
+                JSONArray rootJSONArrayProduct = new JSONArray(jsonProduct);
+                JSONObject rootJSONObjectEx = rootJSONArrayProduct.getJSONObject(0);
+
+                JSONObject acfProduct = rootJSONObjectEx.getJSONObject("acf");
+
+                String url_name = acfProduct.getString("url_name");
+                String productNameHEB = acfProduct.getString("food_heb");
+                String productNameEN = acfProduct.getString("food_en");
+                String productImage = acfProduct.getString("image");
+
+                JSONObject nutritionalValuesJSONObject = acfProduct.getJSONObject("nutritional_values");
+
+                String calories = nutritionalValuesJSONObject.getString("calories");
+                Double caloriesDouble = Double.parseDouble(calories);
+
+                String proteins = nutritionalValuesJSONObject.getString("proteins");
+                Double proteinsDouble = Double.parseDouble(proteins);
+
+                String carbohydrates = nutritionalValuesJSONObject.getString("Carbohydrates");
+                Double carbohydratesDouble = Double.parseDouble(carbohydrates);
+
+                String sugar = nutritionalValuesJSONObject.getString("sugar");
+                Double sugarDouble = Double.parseDouble(sugar);
+
+                String fats = nutritionalValuesJSONObject.getString("fats");
+                Double fatsDouble = Double.parseDouble(fats);
+
+                String saturatedFat = nutritionalValuesJSONObject.getString("saturated_fat");
+                Double saturatedFatDouble = Double.parseDouble(saturatedFat);
+
+                productDataBaseList.add(new ProductDataBase(url_name,productNameHEB,productNameEN,productImage,caloriesDouble,proteinsDouble,carbohydratesDouble,sugarDouble,fatsDouble,saturatedFatDouble));
+
             }
 
             Diet dietFinal = new Diet(numberOfMealsInt, meals);
@@ -252,7 +326,9 @@ public class AsyncJSON extends AsyncTask<String, Integer, User>{
 
             DietProcessTab dietProcessTab = new DietProcessTab(dietRawList);
 
-            User user = new User(name,strings[0],bDayDate,heightDouble,job,phoneNumber,email,strings[1],goal,limitation,days, dietProcessTab,dietFinal);
+            User user = new User(name,strings[0],bDayDate,heightDouble,job,phoneNumber,email,strings[1],goal,limitation,days, dietProcessTab,dietFinal, productDataBaseList);
+
+
 
 
             //Save on FireBaseStore

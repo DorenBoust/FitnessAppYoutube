@@ -22,8 +22,9 @@ public class User implements Serializable {
     private List<Day> days;
     private DietProcessTab dietTable;
     private Diet diet;
+    private List<ProductDataBase> productDataBase;
 
-    public User(String name, String integrationCode, Date bDay, double height, String job, String phoneNumber, String email, String registerEmail, String goal, String limitation, List<Day> days, DietProcessTab dietTable, Diet diet) {
+    public User(String name, String integrationCode, Date bDay, double height, String job, String phoneNumber, String email, String registerEmail, String goal, String limitation, List<Day> days, DietProcessTab dietTable, Diet diet, List<ProductDataBase> productDataBase) {
         this.name = name;
         this.integrationCode = integrationCode;
         this.bDay = bDay;
@@ -37,6 +38,14 @@ public class User implements Serializable {
         this.days = days;
         this.dietTable = dietTable;
         this.diet = diet;
+        this.productDataBase = productDataBase;
+    }
+
+    public List<ProductDataBase> getProductDataBase() {
+        return productDataBase;
+    }
+    public void setProductDataBase(List<ProductDataBase> productDataBase) {
+        this.productDataBase = productDataBase;
     }
     public String getName() {
         return name;
@@ -133,6 +142,7 @@ public class User implements Serializable {
                 ", days=" + days +
                 ", dietTable=" + dietTable +
                 ", diet=" + diet +
+                ", productDataBase=" + productDataBase +
                 '}';
     }
 }
