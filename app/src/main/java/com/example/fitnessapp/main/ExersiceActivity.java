@@ -172,9 +172,9 @@ public class ExersiceActivity extends AppCompatActivity {
 
 
 
-        SharedPreferences sharedPreferences2 = getSharedPreferences(KeysSharedPrefercence.USER_SHAREDPREFERCENCE_NAME, Context.MODE_PRIVATE);
+        SharedPreferences sharedPreferences = getSharedPreferences(KeysSharedPrefercence.USER_SHAREDPREFERCENCE_NAME, Context.MODE_PRIVATE);
 
-        int spCorrectExersice = sharedPreferences2.getInt(KeysSharedPrefercence.CORRECT_EXERCISE, 6);
+        int spCorrectExersice = sharedPreferences.getInt(KeysSharedPrefercence.CORRECT_EXERCISE, 6);
         System.out.println("TEST SP 1 =" + spCorrectExersice);
 
         if (spCorrectExersice != 0){

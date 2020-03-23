@@ -1,6 +1,8 @@
 package com.example.fitnessapp.user;
 
-public class ProductDataBase {
+import java.io.Serializable;
+
+public class ProductDataBase implements Serializable {
     private String productURL;
     private String productNameHEB;
     private String productNameEN;

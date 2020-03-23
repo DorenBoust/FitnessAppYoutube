@@ -7,7 +7,6 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Observer;
 import androidx.vectordrawable.graphics.drawable.AnimatedVectorDrawableCompat;
 
-import android.content.SharedPreferences;
 import android.graphics.drawable.AnimatedVectorDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -16,7 +15,6 @@ import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.Toast;
 
-import com.example.fitnessapp.keys.KeysSharedPrefercence;
 import com.example.fitnessapp.keys.KeysFirebaseStore;
 import com.example.fitnessapp.keys.KeysUserFragment;
 import com.example.fitnessapp.main.ArticlesFragment;
@@ -24,17 +22,14 @@ import com.example.fitnessapp.main.DietFragment;
 import com.example.fitnessapp.main.FitnessFragment;
 import com.example.fitnessapp.main.SettingsFragment;
 import com.example.fitnessapp.main.StatusFragment;
+import com.example.fitnessapp.models.BundleSingleton;
 import com.example.fitnessapp.user.AsyncJSON;
+import com.example.fitnessapp.models.FireBaseSingleton;
 import com.example.fitnessapp.user.User;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 
-import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -102,12 +97,11 @@ public class MainActivity extends AppCompatActivity {
        userJsonLiveData.observe(this, new Observer<User>() {
            @Override
            public void onChanged(User user) {
-               userObject = user;
-               Bundle bundle = new Bundle();
-               bundle.putSerializable(KeysUserFragment.USER_DATA_TO_FRAGMENT, userObject);
-               StatusFragment statusFragment = new StatusFragment();
-               statusFragment.setArguments(bundle);
 
+               userObject = user;
+               StatusFragment statusFragment = new StatusFragment();
+
+               BundleSingleton.setUserBundle(userObject, statusFragment);
 
                splash.setAnimation(AnimationUtils.loadAnimation(MainActivity.this, R.anim.faidout));
                splash.setVisibility(View.INVISIBLE);
@@ -206,11 +200,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void jsonParser(){
 
-        FirebaseAuth fAuth = FirebaseAuth.getInstance();
-        FirebaseFirestore fStore = FirebaseFirestore.getInstance();
-
-        String userID = fAuth.getUid();
-        DocumentReference documentReference = fStore.collection(KeysFirebaseStore.COLLECTION_USER).document(userID);
+        DocumentReference documentReference = FireBaseSingleton.documentReference(KeysFirebaseStore.COLLECTION_USER);
 
         documentReference.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @Override
@@ -276,10 +266,8 @@ public class MainActivity extends AppCompatActivity {
             }else {
                 faidinIconLine(iconLines.get(i));
 
-                Bundle bundle = new Bundle();
-                bundle.putSerializable(KeysUserFragment.USER_DATA_TO_FRAGMENT, userObject);
                 Fragment fragment = fragments.get(i);
-                fragment.setArguments(bundle);
+                BundleSingleton.setUserBundle(userObject, fragment);
                 getSupportFragmentManager().beginTransaction().setCustomAnimations(R.anim.faidin,R.anim.faidout,R.anim.faidin,R.anim.faidout).replace(R.id.mainFragment, fragment).commitNow();
 
             }

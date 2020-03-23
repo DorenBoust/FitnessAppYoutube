@@ -1,8 +1,9 @@
 package com.example.fitnessapp.user;
 
+import java.io.Serializable;
 import java.util.List;
 
-public class Meal {
+public class Meal implements Serializable {
     private String mealName;
     private String mealTime;
     private String numberOfProduct;

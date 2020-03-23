@@ -31,8 +31,10 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Dictionary;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Hashtable;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -54,21 +56,9 @@ public class AsyncJSON extends AsyncTask<String, Integer, User>{
         List<DietProcessRaw> dietRawList = new ArrayList<>();
 
         try {
-            URL url = new URL("http://appfitness.boust.me/wp-json/acf/v3/trainers?appConnection=" + strings[0]);
-            System.out.println(url);
-            HttpURLConnection con = (HttpURLConnection) url.openConnection();
 
-            InputStream inputStream = con.getInputStream();
-            BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
-
-            StringBuilder sb = new StringBuilder();
-            String line = null;
-
-            while ((line = reader.readLine()) != null){
-                sb.append(line);
-            }
-
-            String json = sb.toString();
+            String urlTraining = "http://appfitness.boust.me/wp-json/acf/v3/trainers?appConnection=" + strings[0];
+            String json = urlToString(urlTraining);
 
             JSONArray rootJSONArray = new JSONArray(json);
             JSONObject rootJSONObject = rootJSONArray.getJSONObject(0);
@@ -109,20 +99,7 @@ public class AsyncJSON extends AsyncTask<String, Integer, User>{
                     String[] exSplit = exNameJson.split("/");
                     String exJSON = "https://appfitness.boust.me/wp-json/acf/v3/exercises?name=" + exSplit[exSplit.length-1];
 
-                    URL urlEx = new URL(exJSON);
-                    HttpURLConnection conEx = (HttpURLConnection) urlEx.openConnection();
-
-                    InputStream inputStreamEx = conEx.getInputStream();
-                    BufferedReader readerEx = new BufferedReader(new InputStreamReader(inputStreamEx));
-
-                    StringBuilder sbEx = new StringBuilder();
-                    String lineEx = null;
-
-                    while ((lineEx = readerEx.readLine()) != null){
-                        sbEx.append(lineEx);
-                    }
-
-                    String jsonEx = sbEx.toString();
+                    String jsonEx = urlToString(exJSON);
                     System.out.println(jsonEx);
 
                     JSONArray rootJSONArrayEx = new JSONArray(jsonEx);
@@ -263,26 +240,12 @@ public class AsyncJSON extends AsyncTask<String, Integer, User>{
             newNamsProductList.addAll(namesOfProductToExtract);
 
 
-            List<ProductDataBase> productDataBaseList = new ArrayList<>();
+            Dictionary<String, ProductDataBase> productDataBaseList = new Hashtable<>();
 
             for (int i = 0; i <newNamsProductList.size() ; i++) {
 
-                String linkProduct = "http://appfitness.boust.me/wp-json/acf/v3/food?url_name=" + newNamsProductList.get(i);
-                System.out.println("linkProduct - " + linkProduct);
-                URL urlProduct = new URL(linkProduct);
-                HttpURLConnection conProduct = (HttpURLConnection) urlProduct.openConnection();
-
-                InputStream inputStreamProduct = conProduct.getInputStream();
-                BufferedReader readerProduct = new BufferedReader(new InputStreamReader(inputStreamProduct));
-
-                StringBuilder sbProduct = new StringBuilder();
-                String lineProduct = null;
-
-                while ((lineProduct = readerProduct.readLine()) != null){
-                    sbProduct.append(lineProduct);
-                }
-
-                String jsonProduct = sbProduct.toString();
+                String urlProduct = "http://appfitness.boust.me/wp-json/acf/v3/food?url_name=" + newNamsProductList.get(i);
+                String jsonProduct = urlToString(urlProduct);
                 System.out.println("JSON FOOD HEREEEEEEE!!!! - " + jsonProduct);
 
                 JSONArray rootJSONArrayProduct = new JSONArray(jsonProduct);
@@ -315,8 +278,7 @@ public class AsyncJSON extends AsyncTask<String, Integer, User>{
                 String saturatedFat = nutritionalValuesJSONObject.getString("saturated_fat");
                 Double saturatedFatDouble = Double.parseDouble(saturatedFat);
 
-                productDataBaseList.add(new ProductDataBase(url_name,productNameHEB,productNameEN,productImage,caloriesDouble,proteinsDouble,carbohydratesDouble,sugarDouble,fatsDouble,saturatedFatDouble));
-
+                productDataBaseList.put(newNamsProductList.get(i),new ProductDataBase(url_name,productNameHEB,productNameEN,productImage,caloriesDouble,proteinsDouble,carbohydratesDouble,sugarDouble,fatsDouble,saturatedFatDouble));
             }
 
             Diet dietFinal = new Diet(numberOfMealsInt, meals);
@@ -374,6 +336,24 @@ public class AsyncJSON extends AsyncTask<String, Integer, User>{
 
         return total;
 
+    }
+
+    private String urlToString(String inputURL) throws IOException{
+        URL url = new URL(inputURL);
+        System.out.println(url);
+        HttpURLConnection con = (HttpURLConnection) url.openConnection();
+
+        InputStream inputStream = con.getInputStream();
+        BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
+
+        StringBuilder sb = new StringBuilder();
+        String line = null;
+
+        while ((line = reader.readLine()) != null){
+            sb.append(line);
+        }
+
+        return sb.toString();
     }
 
 }

@@ -5,6 +5,7 @@ import android.os.Parcelable;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.Dictionary;
 import java.util.List;
 
 public class User implements Serializable {
@@ -22,9 +23,9 @@ public class User implements Serializable {
     private List<Day> days;
     private DietProcessTab dietTable;
     private Diet diet;
-    private List<ProductDataBase> productDataBase;
+    private Dictionary<String, ProductDataBase> productDataBase;
 
-    public User(String name, String integrationCode, Date bDay, double height, String job, String phoneNumber, String email, String registerEmail, String goal, String limitation, List<Day> days, DietProcessTab dietTable, Diet diet, List<ProductDataBase> productDataBase) {
+    public User(String name, String integrationCode, Date bDay, double height, String job, String phoneNumber, String email, String registerEmail, String goal, String limitation, List<Day> days, DietProcessTab dietTable, Diet diet, Dictionary<String, ProductDataBase> productDataBase) {
         this.name = name;
         this.integrationCode = integrationCode;
         this.bDay = bDay;
@@ -41,10 +42,10 @@ public class User implements Serializable {
         this.productDataBase = productDataBase;
     }
 
-    public List<ProductDataBase> getProductDataBase() {
+    public Dictionary<String, ProductDataBase> getProductDataBase() {
         return productDataBase;
     }
-    public void setProductDataBase(List<ProductDataBase> productDataBase) {
+    public void setProductDataBase(Dictionary<String, ProductDataBase> productDataBase) {
         this.productDataBase = productDataBase;
     }
     public String getName() {
