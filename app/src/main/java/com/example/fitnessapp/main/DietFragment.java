@@ -2,24 +2,36 @@ package com.example.fitnessapp.main;
 
 import androidx.lifecycle.ViewModelProviders;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.fitnessapp.R;
-import com.example.fitnessapp.keys.KeysUserFragment;
+import com.example.fitnessapp.keys.KeysBundle;
+import com.example.fitnessapp.keys.KeysIntents;
+import com.example.fitnessapp.models.BundleSingleton;
+import com.example.fitnessapp.user.Diet;
+import com.example.fitnessapp.user.Meal;
+import com.example.fitnessapp.user.ProductDataBase;
 import com.example.fitnessapp.user.User;
 
-public class DietFragment extends Fragment {
+import java.io.Serializable;
+import java.util.Dictionary;
+
+public class DietFragment extends Fragment implements DietRecyclerAdapter.OnMealLisiner {
 
     private DietViewModel mViewModel;
     private User user;
+    private Diet diet;
 
     public static DietFragment newInstance() {
         return new DietFragment();
@@ -30,8 +42,17 @@ public class DietFragment extends Fragment {
                              @Nullable Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.diet_fragment, container, false);
 
-        user = (User) getArguments().getSerializable(KeysUserFragment.USER_DATA_TO_FRAGMENT);
+        user = (User) getArguments().getSerializable(KeysBundle.USER_DATA_TO_FRAGMENT);
         System.out.println("Diet" + user);
+        System.out.println("Diet - " + user.getDiet().toString());
+
+        diet = user.getDiet();
+
+        final RecyclerView recyclerView = v.findViewById(R.id.diet_recyclerView);
+        DietRecyclerAdapter adapter = new DietRecyclerAdapter(diet, getLayoutInflater(),this);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        recyclerView.setAdapter(adapter);
+
         return v;
     }
 
@@ -42,4 +63,15 @@ public class DietFragment extends Fragment {
         // TODO: Use the ViewModel
     }
 
+    @Override
+    public void onMealClick(int position) {
+        Meal meal = diet.getMeals().get(position);
+        Dictionary<String, ProductDataBase> productDataBase = user.getProductDataBase();
+
+        Intent intent = new Intent(getContext(), DietActivity.class);
+        intent.putExtra(KeysIntents.DIET_DATA, meal);
+        intent.putExtra(KeysIntents.SEND_USER, user);
+        startActivity(intent);
+        System.out.println("Click On Meal");
+    }
 }

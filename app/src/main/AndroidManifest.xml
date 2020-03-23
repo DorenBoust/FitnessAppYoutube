@@ -6,7 +6,6 @@
 
     <application
         android:name=".models.AppNotification"
-
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -14,7 +13,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="false"
         android:theme="@style/AppTheme">
-        <activity android:name=".main.ExersiceActivity"></activity>
+        <activity android:name=".main.DietActivity"></activity>
+        <activity android:name=".main.ExersiceActivity" />
         <activity android:name=".MainActivity" />
         <activity android:name=".IntroActivity">
             <intent-filter>

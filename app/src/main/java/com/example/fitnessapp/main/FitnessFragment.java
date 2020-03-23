@@ -32,7 +32,7 @@ import com.airbnb.lottie.LottieAnimationView;
 import com.example.fitnessapp.R;
 import com.example.fitnessapp.keys.KeysIntents;
 import com.example.fitnessapp.keys.KeysSharedPrefercence;
-import com.example.fitnessapp.keys.KeysUserFragment;
+import com.example.fitnessapp.keys.KeysBundle;
 import com.example.fitnessapp.models.CustomMethods;
 import com.example.fitnessapp.user.Day;
 import com.example.fitnessapp.user.Exercise;
@@ -144,7 +144,7 @@ public class FitnessFragment extends Fragment {
         System.out.println("CorrectDay = " + correctDay);
 
         //get Data and start
-        user = (User) getArguments().getSerializable(KeysUserFragment.USER_DATA_TO_FRAGMENT);
+        user = (User) getArguments().getSerializable(KeysBundle.USER_DATA_TO_FRAGMENT);
         days = user.getDays();
 
         mainDayEx(days);

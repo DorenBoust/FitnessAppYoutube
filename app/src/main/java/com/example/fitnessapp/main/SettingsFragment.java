@@ -2,9 +2,7 @@ package com.example.fitnessapp.main;
 
 import androidx.lifecycle.ViewModelProviders;
 
-import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -17,10 +15,8 @@ import android.view.ViewGroup;
 import android.widget.Button;
 
 import com.example.fitnessapp.LogActivity;
-import com.example.fitnessapp.MainActivity;
 import com.example.fitnessapp.R;
-import com.example.fitnessapp.keys.KeysSharedPrefercence;
-import com.example.fitnessapp.keys.KeysUserFragment;
+import com.example.fitnessapp.keys.KeysBundle;
 import com.example.fitnessapp.user.User;
 import com.google.firebase.auth.FirebaseAuth;
 
@@ -40,7 +36,7 @@ public class SettingsFragment extends Fragment {
                              @Nullable Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.settings_fragment, container, false);
 
-        user = (User) getArguments().getSerializable(KeysUserFragment.USER_DATA_TO_FRAGMENT);
+        user = (User) getArguments().getSerializable(KeysBundle.USER_DATA_TO_FRAGMENT);
         System.out.println("Setting" + user);
 
         btnLogout = v.findViewById(R.id.settingFregment_btn_logout);

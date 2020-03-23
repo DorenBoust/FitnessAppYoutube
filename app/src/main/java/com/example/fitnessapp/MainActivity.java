@@ -16,7 +16,6 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.example.fitnessapp.keys.KeysFirebaseStore;
-import com.example.fitnessapp.keys.KeysUserFragment;
 import com.example.fitnessapp.main.ArticlesFragment;
 import com.example.fitnessapp.main.DietFragment;
 import com.example.fitnessapp.main.FitnessFragment;
@@ -101,7 +100,7 @@ public class MainActivity extends AppCompatActivity {
                userObject = user;
                StatusFragment statusFragment = new StatusFragment();
 
-               BundleSingleton.setUserBundle(userObject, statusFragment);
+               BundleSingleton.setUser(userObject, statusFragment);
 
                splash.setAnimation(AnimationUtils.loadAnimation(MainActivity.this, R.anim.faidout));
                splash.setVisibility(View.INVISIBLE);
@@ -267,7 +266,7 @@ public class MainActivity extends AppCompatActivity {
                 faidinIconLine(iconLines.get(i));
 
                 Fragment fragment = fragments.get(i);
-                BundleSingleton.setUserBundle(userObject, fragment);
+                BundleSingleton.setUser(userObject, fragment);
                 getSupportFragmentManager().beginTransaction().setCustomAnimations(R.anim.faidin,R.anim.faidout,R.anim.faidin,R.anim.faidout).replace(R.id.mainFragment, fragment).commitNow();
 
             }

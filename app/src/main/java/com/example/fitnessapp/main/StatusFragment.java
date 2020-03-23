@@ -1,8 +1,5 @@
 package com.example.fitnessapp.main;
 
-import androidx.annotation.ColorRes;
-import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
 import android.os.Bundle;
@@ -14,26 +11,19 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.AnimationUtils;
 import android.widget.TextView;
 
 import com.example.fitnessapp.R;
-import com.example.fitnessapp.keys.KeysUserFragment;
+import com.example.fitnessapp.keys.KeysBundle;
 import com.example.fitnessapp.user.DietProcessRaw;
 import com.example.fitnessapp.user.DietProcessTab;
 import com.example.fitnessapp.user.User;
 import com.github.mikephil.charting.charts.LineChart;
-import com.github.mikephil.charting.components.Description;
 import com.github.mikephil.charting.components.MarkerImage;
-import com.github.mikephil.charting.components.MarkerView;
-import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
-import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
-import com.github.mikephil.charting.listener.OnChartGestureListener;
-import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
 
 
 import java.io.Serializable;
@@ -69,7 +59,7 @@ public class StatusFragment extends Fragment implements Serializable {
         View v = inflater.inflate(R.layout.status_fragment, container, false);
 
 
-        user = (User) getArguments().getSerializable(KeysUserFragment.USER_DATA_TO_FRAGMENT);
+        user = (User) getArguments().getSerializable(KeysBundle.USER_DATA_TO_FRAGMENT);
         System.out.println("USER ON STATUS - " + user);
         extractChart(user);
 

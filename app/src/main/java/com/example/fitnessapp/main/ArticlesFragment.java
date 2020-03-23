@@ -13,7 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.fitnessapp.R;
-import com.example.fitnessapp.keys.KeysUserFragment;
+import com.example.fitnessapp.keys.KeysBundle;
 import com.example.fitnessapp.user.User;
 
 public class ArticlesFragment extends Fragment {
@@ -30,7 +30,7 @@ public class ArticlesFragment extends Fragment {
                              @Nullable Bundle savedInstanceState) {
         View v =  inflater.inflate(R.layout.articles_fragment, container, false);
 
-        user = (User) getArguments().getSerializable(KeysUserFragment.USER_DATA_TO_FRAGMENT);
+        user = (User) getArguments().getSerializable(KeysBundle.USER_DATA_TO_FRAGMENT);
         System.out.println("Articals" + user);
         return v;
     }
