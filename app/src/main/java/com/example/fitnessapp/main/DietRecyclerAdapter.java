@@ -9,6 +9,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.airbnb.lottie.LottieAnimationView;
 import com.example.fitnessapp.R;
 import com.example.fitnessapp.user.Diet;
 import com.example.fitnessapp.user.Meal;
@@ -42,6 +43,7 @@ public class DietRecyclerAdapter extends RecyclerView.Adapter<DietRecyclerAdapte
 
 
 
+
     }
 
     @Override
@@ -55,6 +57,7 @@ public class DietRecyclerAdapter extends RecyclerView.Adapter<DietRecyclerAdapte
         TextView title;
         Switch notification;
         OnMealLisiner onMealLisiner;
+        LottieAnimationView lottieBackground;
 
         public MealHolder(@NonNull View itemView, OnMealLisiner onMealLisiner) {
             super(itemView);
