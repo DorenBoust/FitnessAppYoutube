@@ -133,25 +133,11 @@ public class MainActivity extends AppCompatActivity {
                getSupportFragmentManager().beginTransaction().setCustomAnimations(R.anim.faidin, R.anim.faidout).replace(R.id.mainFragment, statusFragment).commit();
 
 
-               Diet diet = userObject.getDiet();
-
-               List<Meal> meals = diet.getMeals();
 
 
-               for (int i = 0; i < meals.size() ; i++) {
+               NotificationDietThread notificationDietThread = new NotificationDietThread(MainActivity.this, notificationManager, userObject);
 
-                   String name = meals.get(i).getName();
-                   String time = meals.get(i).getTime();
-
-                   NotificationDietThread notificationDietThread = new NotificationDietThread(MainActivity.this, notificationManager, name, time);
-
-                   notificationDietThread.start();
-
-               }
-
-
-
-
+               notificationDietThread.start();
 
 
            }

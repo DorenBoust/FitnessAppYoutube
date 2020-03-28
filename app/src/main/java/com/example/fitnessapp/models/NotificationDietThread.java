@@ -8,26 +8,27 @@ import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
 
 import com.example.fitnessapp.R;
+import com.example.fitnessapp.user.Meal;
+import com.example.fitnessapp.user.User;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 
 import static com.example.fitnessapp.models.AppNotification.CHANNEL_2_ID;
 
 public class NotificationDietThread extends Thread {
 
-    private String mealName;
-    private String mealTime;
+    private List<Meal> meals;
     private Context context;
     private NotificationManagerCompat notificationManager;
 
-    public NotificationDietThread(Context context, NotificationManagerCompat notificationManager, String mealName, String mealTime){
+    public NotificationDietThread(Context context, NotificationManagerCompat notificationManager, User user){
 
         this.context = context;
-        this.mealName = mealName;
-        this.mealTime = mealTime;
         this.notificationManager = notificationManager;
+        this.meals = user.getDiet().getMeals();
 
     }
 
@@ -37,19 +38,37 @@ public class NotificationDietThread extends Thread {
         DateFormat timeFormat = new SimpleDateFormat("HH:mm");
         String correctTime = timeFormat.format(new Date());
 
-        if (correctTime.equals(mealTime)){
+        System.out.println(correctTime);
 
-            notification(mealTime,mealName);
+        for (int i = 0; i < meals.size() ; i++) {
+            Meal meal = meals.get(i);
 
-            return;
+            String name = meal.getName();
+            String time = meal.getTime();
 
+            if (correctTime.equals(time)){
+
+                notification(time,name);
+
+                try {
+                    Thread.sleep(60_000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+
+
+            } else {
+
+                try {
+                    Thread.sleep(60_000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+
+            }
         }
 
-        try {
-            Thread.sleep(1_000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+
 
         run();
 
