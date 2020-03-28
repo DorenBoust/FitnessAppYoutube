@@ -3,11 +3,14 @@ package com.example.fitnessapp.models;
 
 import android.app.Notification;
 import android.content.Context;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
 
 import com.example.fitnessapp.R;
+import com.example.fitnessapp.keys.KeysSharedPrefercence;
 import com.example.fitnessapp.user.Meal;
 import com.example.fitnessapp.user.User;
 
@@ -16,6 +19,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
+import static android.content.Context.MODE_PRIVATE;
 import static com.example.fitnessapp.models.AppNotification.CHANNEL_2_ID;
 
 public class NotificationDietThread extends Thread {
@@ -40,13 +44,18 @@ public class NotificationDietThread extends Thread {
 
         System.out.println(correctTime);
 
+        int sharedPrefreranceMealNotification = getSharedPrefreranceMealNotification();
+        System.out.println("sharedPrefreranceMealNotification - " + sharedPrefreranceMealNotification);
+
+
         for (int i = 0; i < meals.size() ; i++) {
             Meal meal = meals.get(i);
 
             String name = meal.getName();
             String time = meal.getTime();
 
-            if (correctTime.equals(time)){
+
+            if ((correctTime.equals(time)) && (sharedPrefreranceMealNotification == 1)){
 
                 notification(time,name);
 
@@ -56,21 +65,22 @@ public class NotificationDietThread extends Thread {
                     e.printStackTrace();
                 }
 
-
-            } else {
-
-                try {
-                    Thread.sleep(60_000);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
+                run();
 
             }
+
         }
 
 
+        try {
+            Thread.sleep(60_000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
 
         run();
+
+
 
     }
 
@@ -89,6 +99,16 @@ public class NotificationDietThread extends Thread {
 
         notificationManager.notify(1, notification);
     }
+
+    private int getSharedPrefreranceMealNotification(){
+
+
+        SharedPreferences sharedPreferences = context.getSharedPreferences(KeysSharedPrefercence.USER_SHAREDPREFERCENCE_NAME, MODE_PRIVATE);
+
+        return sharedPreferences.getInt(KeysSharedPrefercence.DIET_NOTIFICATION_SWITCH, 1);
+
+    }
+
 }
 
 
