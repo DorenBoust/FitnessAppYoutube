@@ -1,7 +1,10 @@
 package com.example.fitnessapp.main;
 
+import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationManagerCompat;
 import androidx.lifecycle.ViewModelProviders;
 
+import android.app.Notification;
 import android.content.Intent;
 import android.os.Bundle;
 
@@ -27,11 +30,16 @@ import com.example.fitnessapp.user.User;
 import java.io.Serializable;
 import java.util.Dictionary;
 
+import static com.example.fitnessapp.models.AppNotification.CHANNEL_1_ID;
+import static com.example.fitnessapp.models.AppNotification.CHANNEL_2_ID;
+
 public class DietFragment extends Fragment implements DietRecyclerAdapter.OnMealLisiner {
 
     private DietViewModel mViewModel;
     private User user;
     private Diet diet;
+
+
 
     public static DietFragment newInstance() {
         return new DietFragment();
@@ -47,6 +55,7 @@ public class DietFragment extends Fragment implements DietRecyclerAdapter.OnMeal
         System.out.println("Diet - " + user.getDiet().toString());
 
         diet = user.getDiet();
+
 
         final RecyclerView recyclerView = v.findViewById(R.id.diet_recyclerView);
         DietRecyclerAdapter adapter = new DietRecyclerAdapter(diet, getLayoutInflater(),this);
@@ -74,4 +83,5 @@ public class DietFragment extends Fragment implements DietRecyclerAdapter.OnMeal
         startActivity(intent);
         System.out.println("Click On Meal");
     }
+
 }

@@ -2,11 +2,15 @@ package com.example.fitnessapp;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationManagerCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Observer;
 import androidx.vectordrawable.graphics.drawable.AnimatedVectorDrawableCompat;
 
+import android.app.Notification;
+import android.content.SharedPreferences;
 import android.graphics.drawable.AnimatedVectorDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -16,21 +20,33 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.example.fitnessapp.keys.KeysFirebaseStore;
+import com.example.fitnessapp.keys.KeysSharedPrefercence;
 import com.example.fitnessapp.main.ArticlesFragment;
 import com.example.fitnessapp.main.DietFragment;
 import com.example.fitnessapp.main.FitnessFragment;
 import com.example.fitnessapp.main.SettingsFragment;
 import com.example.fitnessapp.main.StatusFragment;
 import com.example.fitnessapp.models.BundleSingleton;
+import com.example.fitnessapp.models.NotificationDietThread;
 import com.example.fitnessapp.user.AsyncJSON;
 import com.example.fitnessapp.models.FireBaseSingleton;
+import com.example.fitnessapp.user.Diet;
+import com.example.fitnessapp.user.Exercise;
+import com.example.fitnessapp.user.Meal;
 import com.example.fitnessapp.user.User;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
+
+import static com.example.fitnessapp.models.AppNotification.CHANNEL_2_ID;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -66,6 +82,10 @@ public class MainActivity extends AppCompatActivity {
     private ImageView iconLineSetting;
     private boolean settingClicked = false;
 
+    //notification
+    private NotificationManagerCompat notificationManager;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -89,6 +109,10 @@ public class MainActivity extends AppCompatActivity {
         iconSetting = findViewById(R.id.menu_icon_settings);
         iconLineSetting = findViewById(R.id.iconline_setting);
 
+        notificationManager = NotificationManagerCompat.from(this);
+
+
+
 
         jsonParser();
 
@@ -107,6 +131,28 @@ public class MainActivity extends AppCompatActivity {
                menuBar.setAnimation(AnimationUtils.loadAnimation(MainActivity.this, R.anim.faidin));
                menuBar.setVisibility(View.VISIBLE);
                getSupportFragmentManager().beginTransaction().setCustomAnimations(R.anim.faidin, R.anim.faidout).replace(R.id.mainFragment, statusFragment).commit();
+
+
+               Diet diet = userObject.getDiet();
+
+               List<Meal> meals = diet.getMeals();
+
+
+               for (int i = 0; i < meals.size() ; i++) {
+
+                   String name = meals.get(i).getName();
+                   String time = meals.get(i).getTime();
+
+                   NotificationDietThread notificationDietThread = new NotificationDietThread(MainActivity.this, notificationManager, name, time);
+
+                   notificationDietThread.start();
+
+               }
+
+
+
+
+
 
            }
        });
@@ -332,6 +378,7 @@ public class MainActivity extends AppCompatActivity {
         }
         iconLine.setVisibility(View.INVISIBLE);
     }
+
 
 
 }
