@@ -32,6 +32,8 @@ public class DietActivity extends AppCompatActivity {
         mealName = findViewById(R.id.product_meal_name);
         mealTime = findViewById(R.id.product_time_meal);
 
+
+
         Intent intent = getIntent();
         Meal meal = (Meal) intent.getSerializableExtra(KeysIntents.DIET_DATA);
         User user = (User) intent.getSerializableExtra(KeysIntents.SEND_USER);

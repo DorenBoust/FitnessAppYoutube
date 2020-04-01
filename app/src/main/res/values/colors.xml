@@ -10,4 +10,7 @@
     <color name="menuColor">#28DD75</color>
     <color name="opacity">#0028DD75</color>
     <color name="mainRed">#FF1000</color>
+    <color name="diet_fat">#E91E63</color>
+    <color name="diet_pro">#28dd75</color>
+    <color name="diet_carboh">#FF9800</color>
 </resources>

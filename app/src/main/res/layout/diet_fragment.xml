@@ -8,10 +8,161 @@
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/diet_recyclerView"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/guideline50" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline50"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.44" />
+
+    <ImageView
+        android:id="@+id/cal_graph"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:src="@drawable/green"
+        app:layout_constraintBottom_toTopOf="@+id/diet_recyclerView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <com.github.mikephil.charting.charts.PieChart
+        android:id="@+id/pieGraph_nat"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toTopOf="@+id/guideline54"
+        app:layout_constraintEnd_toStartOf="@+id/guideline55"
+        app:layout_constraintStart_toStartOf="@+id/guideline58"
+        app:layout_constraintTop_toTopOf="@+id/guideline59" />
+
+    <TextView
+        android:id="@+id/number_of_cal_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/open_sans_hebrew_regular"
+        android:text="2000"
+        android:textSize="50sp"
+        app:layout_constraintBottom_toTopOf="@+id/diet_recyclerView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/cal_graph"
+        app:layout_constraintTop_toTopOf="@+id/cal_graph" />
+
+    <TextView
+        android:id="@+id/textView10"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="64dp"
+        android:fontFamily="@font/open_sans_hebrew_light"
+        android:text="קלוריות"
+        android:textSize="10sp"
+        app:layout_constraintEnd_toEndOf="@+id/number_of_cal_tv"
+        app:layout_constraintStart_toStartOf="@+id/number_of_cal_tv"
+        app:layout_constraintTop_toTopOf="@+id/number_of_cal_tv" />
+
+    <TextView
+        android:id="@+id/number_of_pro_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/open_sans_hebrew_regular"
+        android:text="1000"
+        android:textColor="@color/diet_pro"
+        android:textSize="20sp"
+        app:layout_constraintEnd_toStartOf="@+id/guideline55"
+        app:layout_constraintTop_toTopOf="@+id/guideline54" />
+
+    <TextView
+        android:id="@+id/textView15"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:fontFamily="@font/open_sans_hebrew_light"
+        android:text="חלבונים"
+        android:textColor="@color/diet_pro"
+        android:textSize="10sp"
+        app:layout_constraintEnd_toEndOf="@+id/number_of_pro_tv"
+        app:layout_constraintStart_toStartOf="@+id/number_of_pro_tv"
+        app:layout_constraintTop_toTopOf="@+id/number_of_pro_tv" />
+
+    <TextView
+        android:id="@+id/textView13"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:fontFamily="@font/open_sans_hebrew_light"
+        android:text="שומנים"
+        android:textColor="@color/diet_fat"
+        android:textSize="10sp"
+        app:layout_constraintEnd_toEndOf="@+id/number_of_fat_tv"
+        app:layout_constraintStart_toStartOf="@+id/number_of_fat_tv"
+        app:layout_constraintTop_toTopOf="@+id/number_of_fat_tv" />
+
+    <TextView
+        android:id="@+id/number_of_fat_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/open_sans_hebrew_regular"
+        android:text="1000"
+        android:textColor="@color/diet_fat"
+        android:textSize="20sp"
+        app:layout_constraintStart_toStartOf="@+id/guideline58"
+        app:layout_constraintTop_toTopOf="@+id/guideline54" />
+
+    <TextView
+        android:id="@+id/textView14"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:fontFamily="@font/open_sans_hebrew_light"
+        android:text="פחממות"
+        android:textColor="@color/diet_carboh"
+        android:textSize="10sp"
+        app:layout_constraintEnd_toEndOf="@+id/number_of_carboh_tv"
+        app:layout_constraintStart_toStartOf="@+id/number_of_carboh_tv"
+        app:layout_constraintTop_toTopOf="@+id/number_of_carboh_tv" />
+
+    <TextView
+        android:id="@+id/number_of_carboh_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/open_sans_hebrew_regular"
+        android:text="500"
+        android:textColor="@color/diet_carboh"
+        android:textSize="20sp"
+        app:layout_constraintEnd_toStartOf="@+id/number_of_pro_tv"
+        app:layout_constraintStart_toEndOf="@+id/number_of_fat_tv"
+        app:layout_constraintTop_toTopOf="@+id/guideline54" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline54"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.38" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline55"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.8" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline58"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.2" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline59"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.05" />
 </androidx.constraintlayout.widget.ConstraintLayout>
