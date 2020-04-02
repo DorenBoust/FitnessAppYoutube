@@ -6,6 +6,7 @@ import androidx.core.content.ContextCompat;
 import androidx.lifecycle.ViewModelProviders;
 
 import android.app.Notification;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -23,6 +24,7 @@ import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.example.fitnessapp.MainActivity;
 import com.example.fitnessapp.R;
 import com.example.fitnessapp.keys.KeysBundle;
 import com.example.fitnessapp.keys.KeysIntents;
@@ -73,6 +75,10 @@ public class DietFragment extends Fragment implements DietRecyclerAdapter.OnMeal
                              @Nullable Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.diet_fragment, container, false);
 
+        //without this contact animation crashing if change fragment before the animation finish
+        MainActivity contextFragment = (MainActivity) getActivity();
+
+
         calNumber = v.findViewById(R.id.number_of_cal_tv);
         calLabel = v.findViewById(R.id.textView10);
         calImage = v.findViewById(R.id.cal_graph);
@@ -104,7 +110,7 @@ public class DietFragment extends Fragment implements DietRecyclerAdapter.OnMeal
         v.postDelayed(new Runnable() {
             @Override
             public void run() {
-                animationPlatte();
+                animationPlatte(contextFragment);
             }
         }, 500);
 
@@ -202,43 +208,43 @@ public class DietFragment extends Fragment implements DietRecyclerAdapter.OnMeal
 
     }
 
-    private void animationPlatte(){
+    private void animationPlatte(Context context){
 
 
         calImage.setVisibility(View.VISIBLE);
-        calImage.setAnimation(AnimationUtils.loadAnimation(getContext(),R.anim.diet_animation_faidin));
+        calImage.setAnimation(AnimationUtils.loadAnimation(context,R.anim.diet_animation_faidin));
 
         calNumber.postDelayed(new Runnable() {
             @Override
             public void run() {
 
                 calNumber.setVisibility(View.VISIBLE);
-                calNumber.setAnimation(AnimationUtils.loadAnimation(getContext(), R.anim.diet_animation_faidin));
+                calNumber.setAnimation(AnimationUtils.loadAnimation(context, R.anim.diet_animation_faidin));
 
                 calLabel.postDelayed(new Runnable() {
                     @Override
                     public void run() {
 
                         calLabel.setVisibility(View.VISIBLE);
-                        calLabel.setAnimation(AnimationUtils.loadAnimation(getContext(),R.anim.diet_animation_faidin));
+                        calLabel.setAnimation(AnimationUtils.loadAnimation(context,R.anim.diet_animation_faidin));
 
                         fatNumber.postDelayed(new Runnable() {
                             @Override
                             public void run() {
 
-                                animationTextPlatte(fatNumber,fatLabel);
+                                animationTextPlatte(fatNumber,fatLabel,context);
 
                                 carbohNumber.postDelayed(new Runnable() {
                                     @Override
                                     public void run() {
 
-                                        animationTextPlatte(carbohNumber, carboLebel);
+                                        animationTextPlatte(carbohNumber, carboLebel, context);
 
                                         proLabel.postDelayed(new Runnable() {
                                             @Override
                                             public void run() {
 
-                                                animationTextPlatte(proNumber, proLabel);
+                                                animationTextPlatte(proNumber, proLabel, context);
 
                                             }
                                         }, 300);
@@ -257,13 +263,13 @@ public class DietFragment extends Fragment implements DietRecyclerAdapter.OnMeal
 
     }
 
-    private void animationTextPlatte(TextView number, TextView label){
+    private void animationTextPlatte(TextView number, TextView label, Context context){
 
         number.setVisibility(View.VISIBLE);
-        number.setAnimation(AnimationUtils.loadAnimation(getContext(), R.anim.diet_animation_rtl));
+        number.setAnimation(AnimationUtils.loadAnimation(context, R.anim.diet_animation_rtl));
 
         label.setVisibility(View.VISIBLE);
-        label.setAnimation(AnimationUtils.loadAnimation(getContext(), R.anim.diet_animation_rtl));
+        label.setAnimation(AnimationUtils.loadAnimation(context, R.anim.diet_animation_rtl));
 
     }
 
