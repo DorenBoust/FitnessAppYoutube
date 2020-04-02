@@ -13,8 +13,9 @@ public class ProductDataBase implements Serializable {
     private double sugar;
     private double fats;
     private double saturatedFat;
+    private int avrageGram;
 
-    public ProductDataBase(String productURL, String productNameHEB, String productNameEN, String productImage, double calories, double proteins, double carbohydrates, double sugar, double fats, double saturatedFat) {
+    public ProductDataBase(String productURL, String productNameHEB, String productNameEN, String productImage, double calories, double proteins, double carbohydrates, double sugar, double fats, double saturatedFat, int avrageGram) {
         this.productURL = productURL;
         this.productNameHEB = productNameHEB;
         this.productNameEN = productNameEN;
@@ -25,6 +26,7 @@ public class ProductDataBase implements Serializable {
         this.sugar = sugar;
         this.fats = fats;
         this.saturatedFat = saturatedFat;
+        this.avrageGram = avrageGram;
     }
 
     public String getProductURL() {
@@ -86,6 +88,22 @@ public class ProductDataBase implements Serializable {
     }
     public void setSaturated_fat(double saturated_fat) {
         this.saturatedFat = saturated_fat;
+    }
+
+    public double getSaturatedFat() {
+        return saturatedFat;
+    }
+
+    public void setSaturatedFat(double saturatedFat) {
+        this.saturatedFat = saturatedFat;
+    }
+
+    public int getAvrageGram() {
+        return avrageGram;
+    }
+
+    public void setAvrageGram(int avrageGram) {
+        this.avrageGram = avrageGram;
     }
 
     @Override

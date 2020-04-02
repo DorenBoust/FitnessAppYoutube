@@ -278,7 +278,11 @@ public class AsyncJSON extends AsyncTask<String, Integer, User>{
                 String saturatedFat = nutritionalValuesJSONObject.getString("saturated_fat");
                 Double saturatedFatDouble = Double.parseDouble(saturatedFat);
 
-                productDataBaseList.put(newNamsProductList.get(i),new ProductDataBase(url_name,productNameHEB,productNameEN,productImage,caloriesDouble,proteinsDouble,carbohydratesDouble,sugarDouble,fatsDouble,saturatedFatDouble));
+                String avrageGram = nutritionalValuesJSONObject.getString("avrage_gram_per_unit");
+                Integer avrageGramInt = Integer.valueOf(avrageGram);
+
+
+                productDataBaseList.put(newNamsProductList.get(i),new ProductDataBase(url_name,productNameHEB,productNameEN,productImage,caloriesDouble,proteinsDouble,carbohydratesDouble,sugarDouble,fatsDouble,saturatedFatDouble, avrageGramInt));
             }
 
             Diet dietFinal = new Diet(numberOfMealsInt, meals);

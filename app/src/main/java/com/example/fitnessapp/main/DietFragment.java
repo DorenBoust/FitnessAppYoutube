@@ -2,6 +2,7 @@ package com.example.fitnessapp.main;
 
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
+import androidx.core.content.ContextCompat;
 import androidx.lifecycle.ViewModelProviders;
 
 import android.app.Notification;
@@ -18,6 +19,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AnimationUtils;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.fitnessapp.R;
@@ -29,6 +32,7 @@ import com.example.fitnessapp.user.Meal;
 import com.example.fitnessapp.user.NutritionalValues;
 import com.example.fitnessapp.user.ProductDataBase;
 import com.example.fitnessapp.user.User;
+import com.github.mikephil.charting.animation.Easing;
 import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
@@ -49,9 +53,14 @@ public class DietFragment extends Fragment implements DietRecyclerAdapter.OnMeal
 
     private NutritionalValues nutritionalValues;
     private TextView calNumber;
+    private TextView calLabel;
+    private ImageView calImage;
     private TextView proNumber;
+    private TextView proLabel;
     private TextView fatNumber;
+    private TextView fatLabel;
     private TextView carbohNumber;
+    private TextView carboLebel;
     private PieChart pieChart;
 
 
@@ -65,9 +74,18 @@ public class DietFragment extends Fragment implements DietRecyclerAdapter.OnMeal
         View v = inflater.inflate(R.layout.diet_fragment, container, false);
 
         calNumber = v.findViewById(R.id.number_of_cal_tv);
+        calLabel = v.findViewById(R.id.textView10);
+        calImage = v.findViewById(R.id.cal_graph);
+
         proNumber = v.findViewById(R.id.number_of_pro_tv);
+        proLabel = v.findViewById(R.id.textView15);
+
         fatNumber = v.findViewById(R.id.number_of_fat_tv);
+        fatLabel = v.findViewById(R.id.textView13);
+
         carbohNumber = v.findViewById(R.id.number_of_carboh_tv);
+        carboLebel = v.findViewById(R.id.textView14);
+
         pieChart = v.findViewById(R.id.pieGraph_nat);
 
         user = (User) getArguments().getSerializable(KeysBundle.USER_DATA_TO_FRAGMENT);
@@ -83,7 +101,12 @@ public class DietFragment extends Fragment implements DietRecyclerAdapter.OnMeal
         carbohNumber.setText(String.valueOf(nutritionalValues.getCarboh()));
 
         nutriPie();
-
+        v.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                animationPlatte();
+            }
+        }, 500);
 
         final RecyclerView recyclerView = v.findViewById(R.id.diet_recyclerView);
         DietRecyclerAdapter adapter = new DietRecyclerAdapter(diet, getLayoutInflater(),this);
@@ -115,28 +138,60 @@ public class DietFragment extends Fragment implements DietRecyclerAdapter.OnMeal
 
     private void nutriPie(){
 
+        pieChart.setVisibility(View.INVISIBLE);
+
         pieChart.setUsePercentValues(true);
         pieChart.getDescription().setEnabled(false);
-//        pieChart.setExtraOffsets(5, 10, 5, 5);
+        pieChart.setExtraOffsets(-2, 8, -2, 5);
 
-        pieChart.setDragDecelerationFrictionCoef(0.95f);
+//        pieChart.setDragDecelerationFrictionCoef(0.50f);
 
         pieChart.setDrawHoleEnabled(true);
-        pieChart.setHoleColor(Color.WHITE);
-        pieChart.setTransparentCircleRadius(61f);
+        pieChart.setHoleRadius(75f);
+        pieChart.setHoleColor(Color.alpha(0));
+        pieChart.setTransparentCircleRadius(55f);
+
+        pieChart.setDrawEntryLabels(false);
+        pieChart.getLegend().setEnabled(false);
+
+
+
+
+
+
+        pieChart.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                pieChart.setVisibility(View.VISIBLE);
+                pieChart.animateY(2000, Easing.EaseInOutCirc);
+            }
+        }, 1_200);
+
+
+        pieChart.getRenderer().getPaintRender().setShadowLayer(50,0,0, ContextCompat.getColor(getContext(),R.color.piechet_shadow));
+
+
+
 
 
         ArrayList<PieEntry> yValue = new ArrayList<>();
 
-        yValue.add(new PieEntry(34f,"A"));
-        yValue.add(new PieEntry(58f,"B"));
-        yValue.add(new PieEntry(120f,"C"));
+        yValue.add(new PieEntry(Float.parseFloat(proNumber.getText().toString()),"pro"));
+        yValue.add(new PieEntry(Float.parseFloat(carbohNumber.getText().toString()),"carbh"));
+        yValue.add(new PieEntry(Float.parseFloat(fatNumber.getText().toString()),"fat"));
 
 
         PieDataSet dataSet = new PieDataSet(yValue, "nutritional Values");
         dataSet.setSliceSpace(3f);
         dataSet.setSelectionShift(5f);
-        dataSet.setColor(Color.RED);
+//        dataSet.setColor(Color.RED);
+
+
+        dataSet.setColors(proNumber.getCurrentTextColor(),carbohNumber.getCurrentTextColor(),fatNumber.getCurrentTextColor());
+
+        dataSet.setDrawValues(false);
+
+
 
         PieData data = new PieData(dataSet);
         data.setValueTextSize(10f);
@@ -144,6 +199,71 @@ public class DietFragment extends Fragment implements DietRecyclerAdapter.OnMeal
 
         pieChart.setData(data);
 
+
+    }
+
+    private void animationPlatte(){
+
+
+        calImage.setVisibility(View.VISIBLE);
+        calImage.setAnimation(AnimationUtils.loadAnimation(getContext(),R.anim.diet_animation_faidin));
+
+        calNumber.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+
+                calNumber.setVisibility(View.VISIBLE);
+                calNumber.setAnimation(AnimationUtils.loadAnimation(getContext(), R.anim.diet_animation_faidin));
+
+                calLabel.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+
+                        calLabel.setVisibility(View.VISIBLE);
+                        calLabel.setAnimation(AnimationUtils.loadAnimation(getContext(),R.anim.diet_animation_faidin));
+
+                        fatNumber.postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+
+                                animationTextPlatte(fatNumber,fatLabel);
+
+                                carbohNumber.postDelayed(new Runnable() {
+                                    @Override
+                                    public void run() {
+
+                                        animationTextPlatte(carbohNumber, carboLebel);
+
+                                        proLabel.postDelayed(new Runnable() {
+                                            @Override
+                                            public void run() {
+
+                                                animationTextPlatte(proNumber, proLabel);
+
+                                            }
+                                        }, 300);
+
+                                    }
+                                }, 300);
+
+                            }
+                        }, 500);
+
+                    }
+                }, 500);
+
+            }
+        }, 500);
+
+    }
+
+    private void animationTextPlatte(TextView number, TextView label){
+
+        number.setVisibility(View.VISIBLE);
+        number.setAnimation(AnimationUtils.loadAnimation(getContext(), R.anim.diet_animation_rtl));
+
+        label.setVisibility(View.VISIBLE);
+        label.setAnimation(AnimationUtils.loadAnimation(getContext(), R.anim.diet_animation_rtl));
 
     }
 
