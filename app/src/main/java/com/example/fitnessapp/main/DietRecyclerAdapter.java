@@ -1,12 +1,17 @@
 package com.example.fitnessapp.main;
 
+import android.content.Context;
+import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.Switch;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.airbnb.lottie.LottieAnimationView;
@@ -19,9 +24,14 @@ import com.example.fitnessapp.user.Product;
 import com.example.fitnessapp.user.ProductDataBase;
 import com.example.fitnessapp.user.User;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Dictionary;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class DietRecyclerAdapter extends RecyclerView.Adapter<DietRecyclerAdapter.MealHolder>{
 
@@ -29,13 +39,15 @@ public class DietRecyclerAdapter extends RecyclerView.Adapter<DietRecyclerAdapte
     private Dictionary<String, ProductDataBase> productDataBase;
     private LayoutInflater inflater;
     private OnMealLisiner mOnMealLisiner;
+    private Context context;
 
 
-    public DietRecyclerAdapter(Diet diet, User user, LayoutInflater inflater, OnMealLisiner onMealLisiner) {
+    public DietRecyclerAdapter(Diet diet, User user, LayoutInflater inflater, OnMealLisiner onMealLisiner, Context context) {
         this.diet = diet;
         this.productDataBase = user.getProductDataBase();
         this.inflater = inflater;
         this.mOnMealLisiner = onMealLisiner;
+        this.context = context;
     }
 
     @NonNull
@@ -79,6 +91,12 @@ public class DietRecyclerAdapter extends RecyclerView.Adapter<DietRecyclerAdapte
         }
 
 
+        DateFormat timeFormat = new SimpleDateFormat("HH:mm");
+        String correctTime = timeFormat.format(new Date());
+
+
+
+        holder.cal.setText(String.valueOf(cal));
         holder.pro.setText(String.valueOf(pro));
         holder.carboh.setText(String.valueOf(carboh));
         holder.fat.setText(String.valueOf(fat));
@@ -86,6 +104,17 @@ public class DietRecyclerAdapter extends RecyclerView.Adapter<DietRecyclerAdapte
         holder.title.setText(meal.getName());
 
 
+        int i = meal.getTime().hashCode();
+        System.out.println(meal.getTime() + " - " + i);
+
+
+        String nextMeal = nextMeal();
+
+        if (meal.getTime().equals(nextMeal)) {
+
+            holder.nextMealIcon.setVisibility(View.VISIBLE);
+
+        }
 
 
     }
@@ -99,9 +128,13 @@ public class DietRecyclerAdapter extends RecyclerView.Adapter<DietRecyclerAdapte
 
         TextView time;
         TextView title;
+        TextView cal;
         TextView pro;
         TextView carboh;
         TextView fat;
+
+        ImageView nextMealIcon;
+        ConstraintLayout constraintLayout;
 
         OnMealLisiner onMealLisiner;
         LottieAnimationView lottieBackground;
@@ -110,7 +143,10 @@ public class DietRecyclerAdapter extends RecyclerView.Adapter<DietRecyclerAdapte
             super(itemView);
             time = itemView.findViewById(R.id.diet_recycler_tv_number_meal);
             title = itemView.findViewById(R.id.tv_meal_title);
+            constraintLayout = itemView.findViewById(R.id.diet_meal_constranlayout);
+            nextMealIcon = itemView.findViewById(R.id.next_meal_icon);
 
+            cal = itemView.findViewById(R.id.tv_recycler_cal);
             pro = itemView.findViewById(R.id.tv_recycler_pro);
             carboh = itemView.findViewById(R.id.tv_recycler_carboh);
             fat = itemView.findViewById(R.id.tv_recycler_fat);
@@ -130,6 +166,38 @@ public class DietRecyclerAdapter extends RecyclerView.Adapter<DietRecyclerAdapte
 
     public interface OnMealLisiner{
         void onMealClick(int position);
+    }
+
+
+    private String nextMeal(){
+
+        DateFormat timeFormat = new SimpleDateFormat("HH:mm");
+        String correctTime = timeFormat.format(new Date());
+        int correctTimeHash = correctTime.hashCode();
+
+        List<Meal> meals = diet.getMeals();
+
+
+        for (Meal meal : meals) {
+
+            int mealTimeHash = meal.getTime().hashCode();
+
+            int diff = mealTimeHash - correctTimeHash;
+
+            if (diff > 0){
+
+                return meal.getTime();
+
+            }
+
+
+        }
+
+        return "";
+
+
+
+
     }
 
 }

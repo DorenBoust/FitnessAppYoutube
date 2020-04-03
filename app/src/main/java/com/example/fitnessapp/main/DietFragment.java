@@ -66,6 +66,7 @@ public class DietFragment extends Fragment implements DietRecyclerAdapter.OnMeal
     private PieChart pieChart;
 
 
+
     public static DietFragment newInstance() {
         return new DietFragment();
     }
@@ -115,8 +116,9 @@ public class DietFragment extends Fragment implements DietRecyclerAdapter.OnMeal
         }, 500);
 
         final RecyclerView recyclerView = v.findViewById(R.id.diet_recyclerView);
-        DietRecyclerAdapter adapter = new DietRecyclerAdapter(diet, user, getLayoutInflater(),this);
+        DietRecyclerAdapter adapter = new DietRecyclerAdapter(diet, user, getLayoutInflater(),this, contextFragment);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        recyclerView.setLayoutAnimation(AnimationUtils.loadLayoutAnimation(contextFragment,R.anim.layout_diet_fragment_meal_recycler));
         recyclerView.setAdapter(adapter);
 
         return v;
