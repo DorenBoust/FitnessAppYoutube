@@ -2,6 +2,7 @@ package com.example.fitnessapp.main;
 
 import android.content.Context;
 import android.graphics.drawable.Drawable;
+import android.os.CountDownTimer;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,6 +24,7 @@ import com.example.fitnessapp.user.NutritionalValuesProduct;
 import com.example.fitnessapp.user.Product;
 import com.example.fitnessapp.user.ProductDataBase;
 import com.example.fitnessapp.user.User;
+import com.squareup.picasso.Picasso;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -64,14 +66,18 @@ public class DietRecyclerAdapter extends RecyclerView.Adapter<DietRecyclerAdapte
         List<Product> products = meal.getProducts();
 
         List<NutritionalValuesProduct> nutritionalValuesProductList = new ArrayList<>();
+        List<String> productsImages = new ArrayList<>();
 
         for (Product product : products) {
 
             ProductDataBase productDataBase = this.productDataBase.get(product.getProductName());
 
             NutritionalValuesProduct productNut = CustomMethods.getProductNut(productDataBase, product);
-
             nutritionalValuesProductList.add(productNut);
+
+            productsImages.add(productDataBase.getProductImage());
+
+
         }
 
 
@@ -104,6 +110,27 @@ public class DietRecyclerAdapter extends RecyclerView.Adapter<DietRecyclerAdapte
         holder.title.setText(meal.getName());
 
 
+
+        CountDownTimer countDownTimer = new CountDownTimer(productsImages.size() * 3_000, 3_000) {
+            int productImageIndex = 0;
+            @Override
+            public void onTick(long millisUntilFinished) {
+
+                Picasso.get().load(productsImages.get(productImageIndex++)).into(holder.productImage);
+                System.out.println("Position - " + position);
+
+            }
+
+            @Override
+            public void onFinish() {
+
+                productImageIndex = 0;
+                this.start();
+
+            }
+        };
+
+
         int i = meal.getTime().hashCode();
         System.out.println(meal.getTime() + " - " + i);
 
@@ -132,6 +159,7 @@ public class DietRecyclerAdapter extends RecyclerView.Adapter<DietRecyclerAdapte
         TextView pro;
         TextView carboh;
         TextView fat;
+        ImageView productImage;
 
         ImageView nextMealIcon;
         ConstraintLayout constraintLayout;
@@ -145,6 +173,7 @@ public class DietRecyclerAdapter extends RecyclerView.Adapter<DietRecyclerAdapte
             title = itemView.findViewById(R.id.tv_meal_title);
             constraintLayout = itemView.findViewById(R.id.diet_meal_constranlayout);
             nextMealIcon = itemView.findViewById(R.id.next_meal_icon);
+            productImage = itemView.findViewById(R.id.productImageView);
 
             cal = itemView.findViewById(R.id.tv_recycler_cal);
             pro = itemView.findViewById(R.id.tv_recycler_pro);
