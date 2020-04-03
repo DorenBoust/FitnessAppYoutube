@@ -115,7 +115,7 @@ public class DietFragment extends Fragment implements DietRecyclerAdapter.OnMeal
         }, 500);
 
         final RecyclerView recyclerView = v.findViewById(R.id.diet_recyclerView);
-        DietRecyclerAdapter adapter = new DietRecyclerAdapter(diet, getLayoutInflater(),this);
+        DietRecyclerAdapter adapter = new DietRecyclerAdapter(diet, user, getLayoutInflater(),this);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.setAdapter(adapter);
 

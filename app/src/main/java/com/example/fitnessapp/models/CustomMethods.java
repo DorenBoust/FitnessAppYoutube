@@ -2,6 +2,9 @@ package com.example.fitnessapp.models;
 
 import com.example.fitnessapp.user.Day;
 import com.example.fitnessapp.user.Exercise;
+import com.example.fitnessapp.user.NutritionalValuesProduct;
+import com.example.fitnessapp.user.Product;
+import com.example.fitnessapp.user.ProductDataBase;
 
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -108,6 +111,74 @@ public class CustomMethods {
         }
 
         return null;
+    }
+
+    public static NutritionalValuesProduct getProductNut(ProductDataBase productDataBaseOfOneProduct, Product product){
+
+        String productName = product.getProductName();
+        double qty = Double.parseDouble(product.getQty());
+        String unit = product.getUnit();
+
+        int cal = 0;
+        int pro = 0;
+        int fat = 0;
+        int carboh = 0;
+
+
+        switch (unit){
+            case "גרם":
+
+                cal += (qty / 100.0) * productDataBaseOfOneProduct.getCalories();
+                pro += (qty / 100.0) * productDataBaseOfOneProduct.getProteins();
+                fat += (qty / 100.0) * productDataBaseOfOneProduct.getFats();
+                carboh += (qty / 100.0) * productDataBaseOfOneProduct.getCarbohydrates();
+
+                break;
+
+            case "כפיות":
+
+                cal += (qty / 5.0) * productDataBaseOfOneProduct.getCalories();
+                pro += (qty / 5.0) * productDataBaseOfOneProduct.getProteins();
+                fat += (qty / 5.0) * productDataBaseOfOneProduct.getFats();
+                carboh += (qty / 5.0) * productDataBaseOfOneProduct.getCarbohydrates();
+
+                break;
+
+            case "כפות":
+
+                cal += (qty / 10.0) * productDataBaseOfOneProduct.getCalories();
+                pro += (qty / 10.0) * productDataBaseOfOneProduct.getProteins();
+                fat += (qty / 10.0) * productDataBaseOfOneProduct.getFats();
+                carboh += (qty / 10.0) * productDataBaseOfOneProduct.getCarbohydrates();
+
+                break;
+
+            case "כוסות":
+
+                cal += (qty * 2) * productDataBaseOfOneProduct.getCalories(); // avrage gram per cup 200 gram. if have (3 cups * 2) * 100 gram = 600
+                pro += (qty * 2) * productDataBaseOfOneProduct.getProteins();
+                fat += (qty * 2) * productDataBaseOfOneProduct.getFats();
+                carboh += (qty * 2) * productDataBaseOfOneProduct.getCarbohydrates();
+
+                break;
+
+            case "יחידות":
+
+                cal += ((qty * productDataBaseOfOneProduct.getAvrageGram()) / 100) * productDataBaseOfOneProduct.getCalories();  // ((2 unit * 250 gram per unit) /100) * 100 gram
+                pro += ((qty * productDataBaseOfOneProduct.getAvrageGram()) / 100) * productDataBaseOfOneProduct.getProteins();
+                fat += ((qty * productDataBaseOfOneProduct.getAvrageGram()) / 100) * productDataBaseOfOneProduct.getFats();
+                carboh += ((qty * productDataBaseOfOneProduct.getAvrageGram()) / 100) * productDataBaseOfOneProduct.getCarbohydrates();
+
+                break;
+
+
+
+        }
+
+
+
+        return new NutritionalValuesProduct(cal,pro,carboh,fat);
+
     }
 
 
