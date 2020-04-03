@@ -17,6 +17,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.os.CountDownTimer;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,9 +30,11 @@ import com.example.fitnessapp.R;
 import com.example.fitnessapp.keys.KeysBundle;
 import com.example.fitnessapp.keys.KeysIntents;
 import com.example.fitnessapp.models.BundleSingleton;
+import com.example.fitnessapp.models.ChangeProductImageDietFragment;
 import com.example.fitnessapp.user.Diet;
 import com.example.fitnessapp.user.Meal;
 import com.example.fitnessapp.user.NutritionalValues;
+import com.example.fitnessapp.user.Product;
 import com.example.fitnessapp.user.ProductDataBase;
 import com.example.fitnessapp.user.User;
 import com.github.mikephil.charting.animation.Easing;
@@ -43,6 +46,7 @@ import com.github.mikephil.charting.data.PieEntry;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Dictionary;
+import java.util.List;
 
 import static com.example.fitnessapp.models.AppNotification.CHANNEL_1_ID;
 import static com.example.fitnessapp.models.AppNotification.CHANNEL_2_ID;
@@ -120,6 +124,75 @@ public class DietFragment extends Fragment implements DietRecyclerAdapter.OnMeal
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.setLayoutAnimation(AnimationUtils.loadLayoutAnimation(contextFragment,R.anim.layout_diet_fragment_meal_recycler));
         recyclerView.setAdapter(adapter);
+
+
+
+
+
+        //without the delayed itemView crashing!!
+        recyclerView.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+
+                int x = 0;
+                List<Meal> meals = user.getDiet().getMeals();
+                System.out.println("meals.size " + meals.size());
+                for (int i = 0; i < meals.size() - 1; i++) {
+
+                    //TODO: Crash if the meal box not show right in the UI // like at the field exsercie history
+                    View itemView = recyclerView.getChildAt(i);
+                    ImageView productImage = itemView.findViewById(R.id.productImageView);
+                    List<ChangeProductImageDietFragment> changeProductImageDietFragmentList = new ArrayList<>();
+
+
+                    List<Product> products = meals.get(i).getProducts();
+                    List<ProductDataBase> productDataBaseList = new ArrayList<>();
+
+                    for (int j = 0; j < products.size() ; j++) {
+
+                        productDataBaseList.add(user.getProductDataBase().get(products.get(j).getProductName()));
+
+                    }
+
+                    changeProductImageDietFragmentList.add(new ChangeProductImageDietFragment(productImage, productDataBaseList, contextFragment));
+
+
+                    for (ChangeProductImageDietFragment changeProductImageDietFragment : changeProductImageDietFragmentList) {
+
+                        changeProductImageDietFragment.start();
+
+                    }
+
+                }
+
+            }
+        }, 5000);
+
+
+//        List<Meal> meals = user.getDiet().getMeals();
+//        List<ChangeProductImageDietFragment> changeProductImageDietFragmentList = new ArrayList<>();
+//        for (int i = 0; i < meals.size(); i++) {
+//
+//            View itemView = recyclerView.getChildAt(i);
+//            ImageView productImage = itemView.findViewById(R.id.productImageView);
+//
+//            List<Product> products = meals.get(i).getProducts();
+//            List<ProductDataBase> productDataBaseList = new ArrayList<>();
+//            for (int j = 0; j < products.size() ; j++) {
+//
+//                productDataBaseList.add(user.getProductDataBase().get(products.get(j).getProductName()));
+//
+//            }
+//            changeProductImageDietFragmentList.add(new ChangeProductImageDietFragment(productImage, productDataBaseList));
+//
+//        }
+//
+//        for (ChangeProductImageDietFragment changeImage : changeProductImageDietFragmentList) {
+//
+//            changeImage.start();
+//
+//        }
+
 
         return v;
     }

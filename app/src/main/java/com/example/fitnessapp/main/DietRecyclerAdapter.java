@@ -60,6 +60,8 @@ public class DietRecyclerAdapter extends RecyclerView.Adapter<DietRecyclerAdapte
         return new MealHolder(v, mOnMealLisiner);
     }
 
+
+
     @Override
     public void onBindViewHolder(@NonNull MealHolder holder, int position) {
         Meal meal = diet.getMeals().get(position);
@@ -145,6 +147,8 @@ public class DietRecyclerAdapter extends RecyclerView.Adapter<DietRecyclerAdapte
 
 
     }
+
+
 
     @Override
     public int getItemCount() {

@@ -233,7 +233,7 @@ public class ExersiceActivity extends AppCompatActivity {
 
                 List<ExersixeOneRawHistory> exersixeOneRawHistories = new ArrayList<>();
                 for (int i = 0; i < itemCount ; i++) {
-                    RecyclerView.ViewHolder viewHolderForAdapterPosition = recyclerViewComponent.findViewHolderForAdapterPosition(i);
+//                    RecyclerView.ViewHolder viewHolderForAdapterPosition = recyclerViewComponent.findViewHolderForAdapterPosition(i);
                     View view = recyclerViewComponent.getChildAt(i);
                     System.out.println("number of i" + i);
 
@@ -617,94 +617,105 @@ public class ExersiceActivity extends AppCompatActivity {
 
     private void getHistoryExFromFirebase(){
 
-        fStore.collection(KeysFirebaseStore.EXERCISE_HISTORY_DATA).document(fAuth.getUid())
-                .collection(tvExName.getText().toString()).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+            fStore.collection(KeysFirebaseStore.EXERCISE_HISTORY_DATA).document(fAuth.getUid())
+                    .collection(tvExName.getText().toString()).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                @Override
+                public void onComplete(@NonNull Task<QuerySnapshot> task) {
 
-                List<ExerciseHistory> listExerciseHistory = new ArrayList<>();
+                    System.out.println("Connect to History Firebase");
+                    List<ExerciseHistory> listExerciseHistory = new ArrayList<>();
 
-                for (int i = 0; i < task.getResult().size() ; i++) {
-                    Map<String, Object> data = task.getResult().getDocuments().get(i).getData();
-                    System.out.println("Data ----- " +data);
+                    System.out.println("task.getResult().size() - " + task.getResult().size());
 
-                    System.out.println("Name Class ------ " + data.getClass().getSimpleName());
+                    for (int i = 0; i < task.getResult().size(); i++) {
+                        Map<String, Object> data = task.getResult().getDocuments().get(i).getData();
+                        System.out.println("Data ----- " + data);
 
-                    Object exerciseHistories = data.get("exerciseHistories");
-                    System.out.println("OBJECT --------- " + exerciseHistories);
+                        System.out.println("Name Class ------ " + data.getClass().getSimpleName());
 
-                    Gson gson = new Gson();
-                    String row = gson.toJson(exerciseHistories);
+                        Object exerciseHistories = data.get("exerciseHistories");
+                        System.out.println("OBJECT --------- " + exerciseHistories);
 
-                    System.out.println("JSON NEWWWWWWW ----- " + row);
+                        Gson gson = new Gson();
+                        String row = gson.toJson(exerciseHistories);
 
-                    try {
-                        JSONArray jsonArray = new JSONArray(row);
-                        for (int j = 0; j < jsonArray.length() ; j++) {
-                            JSONObject jsonObject = (JSONObject) jsonArray.get(j);
-                            String jsonDate = (String) jsonObject.get("date");
+                        System.out.println("JSON NEWWWWWWW ----- " + row);
 
-                            System.out.println(jsonDate);
+                        try {
+                            JSONArray jsonArray = new JSONArray(row);
+                            for (int j = 0; j < jsonArray.length(); j++) {
+                                JSONObject jsonObject = (JSONObject) jsonArray.get(j);
+                                String jsonDate = (String) jsonObject.get("date");
 
-                            JSONArray jsonExList = (JSONArray) jsonObject.get("exList");
+                                System.out.println(jsonDate);
 
-                            List<ExersixeOneRawHistory> listExersixeOneRawHistory = new ArrayList<>();
+                                JSONArray jsonExList = (JSONArray) jsonObject.get("exList");
 
-                            for (int k = 0; k < jsonExList.length() ; k++) {
-                                JSONObject jsonObject1 = (JSONObject) jsonExList.get(k);
+                                List<ExersixeOneRawHistory> listExersixeOneRawHistory = new ArrayList<>();
 
-                                Integer jsonSet = (Integer) jsonObject1.get("set");
+                                for (int k = 0; k < jsonExList.length(); k++) {
+                                    JSONObject jsonObject1 = (JSONObject) jsonExList.get(k);
 
-                                Double jsonKG = (Double) jsonObject1.get("kg");
+                                    Integer jsonSet = (Integer) jsonObject1.get("set");
 
-                                Integer jsonRepit =(Integer) jsonObject1.get("repit");
+                                    Double jsonKG = (Double) jsonObject1.get("kg");
+
+                                    Integer jsonRepit = (Integer) jsonObject1.get("repit");
 
 
-                                ExersixeOneRawHistory exersixeOneRawHistoryJSON = new ExersixeOneRawHistory(jsonSet,jsonRepit,jsonKG);
-                                listExersixeOneRawHistory.add(exersixeOneRawHistoryJSON);
+                                    ExersixeOneRawHistory exersixeOneRawHistoryJSON = new ExersixeOneRawHistory(jsonSet, jsonRepit, jsonKG);
+                                    listExersixeOneRawHistory.add(exersixeOneRawHistoryJSON);
+                                }
+
+                                ExerciseHistory exerciseHistoryJSON = new ExerciseHistory(jsonDate, listExersixeOneRawHistory);
+                                listExerciseHistory.add(exerciseHistoryJSON);
+
                             }
-
-                            ExerciseHistory exerciseHistoryJSON = new ExerciseHistory(jsonDate,listExersixeOneRawHistory);
-                            listExerciseHistory.add(exerciseHistoryJSON);
-
+                        } catch (JSONException e) {
+                            e.printStackTrace();
                         }
-                    } catch (JSONException e) {
-                        e.printStackTrace();
                     }
+                    exerciseHistoryRoot = listExerciseHistory;
+                    counterHistoryBTN = exerciseHistoryRoot.size();
+                    getCorrectHistory = exerciseHistoryRoot.size() - 1;
+                    historyRecyclerView(exerciseHistoryRoot, getCorrectHistory);
                 }
-                exerciseHistoryRoot = listExerciseHistory;
-                counterHistoryBTN = exerciseHistoryRoot.size();
-                getCorrectHistory = exerciseHistoryRoot.size() - 1;
-                historyRecyclerView(exerciseHistoryRoot, getCorrectHistory);
-            }
-        });
+
+            });
+
 
     }
 
-    private void historyRecyclerView(List<ExerciseHistory> exerciseHistories, int dateCounter){
-        RecyclerView recyclerView = findViewById(R.id.history_recyclerview);
-        ExsercieHistoryRecyclerAdapter adapter = new ExsercieHistoryRecyclerAdapter(exerciseHistories, dateCounter, getLayoutInflater());
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        recyclerView.setAdapter(adapter);
-        tvDateHistory.setText(exerciseHistories.get(dateCounter).getDate());
+    private void historyRecyclerView(List<ExerciseHistory> exerciseHistories, int dateCounter) {
 
-        SimpleDateFormat dayNameFormat = new SimpleDateFormat("dd-MM-yyyy");
-        try {
-            Date dayName = dayNameFormat.parse(tvDateHistory.getText().toString());
-            SimpleDateFormat outFormat = new SimpleDateFormat("EEEE");
-            String dayNameString = outFormat.format(dayName);
 
-            if (!dayNameString.contains("י")){
-                tvDayHistory.setText(CustomMethods.convertDate(dayNameString));
-                return;
+        if (exerciseHistories.size() != 0) {
+
+            RecyclerView recyclerView = findViewById(R.id.history_recyclerview);
+            ExsercieHistoryRecyclerAdapter adapter = new ExsercieHistoryRecyclerAdapter(exerciseHistories, dateCounter, getLayoutInflater());
+            recyclerView.setLayoutManager(new LinearLayoutManager(this));
+            recyclerView.setAdapter(adapter);
+            System.out.println("exerciseHistories.size - " + exerciseHistories.size());
+            tvDateHistory.setText(exerciseHistories.get(dateCounter).getDate());
+
+            SimpleDateFormat dayNameFormat = new SimpleDateFormat("dd-MM-yyyy");
+            try {
+                Date dayName = dayNameFormat.parse(tvDateHistory.getText().toString());
+                SimpleDateFormat outFormat = new SimpleDateFormat("EEEE");
+                String dayNameString = outFormat.format(dayName);
+
+                if (!dayNameString.contains("י")) {
+                    tvDayHistory.setText(CustomMethods.convertDate(dayNameString));
+                    return;
+                }
+
+                tvDayHistory.setText(dayNameString);
+            } catch (ParseException e) {
+                e.printStackTrace();
             }
 
-            tvDayHistory.setText(dayNameString);
-        } catch (ParseException e) {
-            e.printStackTrace();
+
         }
-
-
     }
 
 
