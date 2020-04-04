@@ -3,6 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
+    android:background="@color/mainGreen"
     android:layout_height="match_parent"
     tools:context=".main.ExersiceActivity">
 
@@ -16,6 +17,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/ex_activity_title_layout"
         android:layout_width="0dp"
+        android:elevation="16dp"
         android:layout_height="0dp"
         android:background="@color/mainGreen"
         app:layout_constraintBottom_toTopOf="@+id/guideline23"
@@ -91,7 +93,7 @@
         android:inAnimation="@anim/faidin"
         android:outAnimation="@anim/faidout"
         android:text="יד קידמית"
-        android:textColor="@color/mainGreen"
+        android:textColor="@color/waite"
         android:textSize="16sp"
         app:layout_constraintEnd_toStartOf="@+id/guideline30"
         app:layout_constraintStart_toStartOf="@+id/guideline32"
@@ -104,7 +106,7 @@
         android:layout_marginTop="8dp"
         android:fontFamily="@font/open_sans_hebrew_bold"
         android:text="מלא נתונים"
-        android:textColor="@color/mainGreen"
+        android:textColor="@color/waite"
         android:textSize="16sp"
         app:layout_constraintEnd_toStartOf="@+id/guideline30"
         app:layout_constraintStart_toStartOf="@+id/guideline32"
@@ -119,7 +121,7 @@
         android:inAnimation="@anim/faidin"
         android:outAnimation="@anim/faidout"
         android:text="תרגיל 3"
-        android:textColor="@color/mainGreen"
+        android:textColor="@color/waite"
         android:textSize="12sp"
         app:layout_constraintEnd_toEndOf="@+id/tv_ex_activity_title_exName"
         app:layout_constraintStart_toStartOf="@+id/tv_ex_activity_title_exName"
@@ -128,12 +130,14 @@
     <ImageView
         android:id="@+id/iv_ex_activity_title_nextGreen"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"
         app:layout_constraintBottom_toBottomOf="@+id/tv_ex_activity_title_exNumber"
         app:layout_constraintEnd_toStartOf="@+id/guideline30"
         app:layout_constraintStart_toStartOf="@+id/guideline30"
         app:layout_constraintTop_toTopOf="@+id/guideline23"
-        app:srcCompat="@drawable/next_arrow_green" />
+        app:srcCompat="@drawable/next" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline30"
@@ -152,13 +156,15 @@
     <ImageView
         android:id="@+id/iv_ex_activity_title_backGreen"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"
         android:visibility="invisible"
         app:layout_constraintBottom_toBottomOf="@+id/tv_ex_activity_title_exNumber"
         app:layout_constraintEnd_toStartOf="@+id/guideline32"
         app:layout_constraintStart_toStartOf="@+id/guideline32"
         app:layout_constraintTop_toTopOf="@+id/guideline23"
-        app:srcCompat="@drawable/back_arrow_green"
+        app:srcCompat="@drawable/back"
         tools:visibility="visible" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -166,6 +172,7 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginTop="8dp"
+        android:elevation="16dp"
         android:background="@drawable/background_ex_activity"
         app:layout_constraintBottom_toTopOf="@+id/guideline37"
         app:layout_constraintEnd_toEndOf="parent"
@@ -431,11 +438,25 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:background="@drawable/background_ex_history"
-        android:visibility="invisible"
+        android:elevation="16dp"
         app:layout_constraintBottom_toTopOf="@+id/guideline41"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/layout_field_details_for_history">
+
+        <TextView
+            android:id="@+id/no_history"
+            android:text="לא נמצאה היסטוריה"
+            android:layout_width="0dp"
+            android:gravity="center"
+            android:textSize="25sp"
+            android:visibility="invisible"
+
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toBottomOf="@+id/history_recyclerview"
+            app:layout_constraintEnd_toEndOf="@+id/history_recyclerview"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/guideline47"
@@ -454,24 +475,28 @@
         <ImageView
             android:id="@+id/history_next"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="0dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
             android:visibility="invisible"
             app:layout_constraintBottom_toTopOf="@+id/guideline47"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="@+id/guideline48"
             app:layout_constraintTop_toTopOf="@+id/day_history_title"
-            app:srcCompat="@drawable/next_arrow_green"
+            app:srcCompat="@drawable/next"
             tools:visibility="visible" />
 
         <ImageView
             android:id="@+id/history_back"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="0dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
             app:layout_constraintBottom_toTopOf="@+id/guideline47"
             app:layout_constraintEnd_toStartOf="@+id/guideline48"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="@+id/day_history_title"
-            app:srcCompat="@drawable/back_arrow_green" />
+            app:srcCompat="@drawable/back" />
 
         <TextView
             android:id="@+id/day_history_title"

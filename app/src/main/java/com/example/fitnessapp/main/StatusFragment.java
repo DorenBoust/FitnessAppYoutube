@@ -133,7 +133,7 @@ public class StatusFragment extends Fragment implements Serializable {
             if (textView.equals(textViewsList.get(i))){
                 textViewsList.get(i).setTextColor(getResources().getColor(R.color.mainRed));
             } else {
-                textViewsList.get(i).setTextColor(getResources().getColor(R.color.mainGreen));
+                textViewsList.get(i).setTextColor(getResources().getColor(R.color.waite));
             }
         }
         ArrayList<Entry> dataGraph = new ArrayList<>();

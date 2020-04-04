@@ -1,5 +1,6 @@
 package com.example.fitnessapp.main;
 
+import android.content.res.Resources;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -44,6 +45,12 @@ public class ExsercieHistoryRecyclerAdapter extends RecyclerView.Adapter<Exserci
             holder.repit.setText(String.valueOf(exersixeOneRawHistory.getRepit()));
             holder.kg.setText(String.valueOf(exersixeOneRawHistory.getKg()));
         }
+
+        if (position == exList.size() - 1){
+            Resources res = holder.itemView.getContext().getResources();
+            holder.line.setBackgroundColor(res.getColor(R.color.opacity));
+        }
+
 
     }
 

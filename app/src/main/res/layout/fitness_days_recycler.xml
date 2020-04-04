@@ -3,6 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
+
+    android:elevation="20dp"
     android:background="@drawable/background_main_fitness_day"
     android:layout_height="wrap_content">
 

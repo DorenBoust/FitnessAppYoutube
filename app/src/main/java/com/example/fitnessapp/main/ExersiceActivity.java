@@ -114,6 +114,8 @@ public class ExersiceActivity extends AppCompatActivity {
     private ImageView btnHistoryBack;
     private ImageView btnHistoryNext;
     private TextView recyclerTitle;
+    private TextView noHistory;
+    private RecyclerView recyclerView;
 
 
     //youtube
@@ -162,6 +164,8 @@ public class ExersiceActivity extends AppCompatActivity {
         btnHistoryBack = findViewById(R.id.history_back);
         btnHistoryNext = findViewById(R.id.history_next);
         recyclerTitle = findViewById(R.id.tv_ex_activity_title_exName2);
+        noHistory = findViewById(R.id.no_history);
+        recyclerView = findViewById(R.id.history_recyclerview);
 
         youtubeBTN = findViewById(R.id.iv_ex_activity_details_playBTN);
         youtubeLayout = findViewById(R.id.youtubeLayout);
@@ -443,7 +447,7 @@ public class ExersiceActivity extends AppCompatActivity {
         });
 
         btnHistoryBack.setOnClickListener(v->{
-            btnHistoryNext.setVisibility(View.VISIBLE);
+
 
               if (getCorrectHistory != 0) {
                     historyRecyclerView(exerciseHistoryRoot, --getCorrectHistory);
@@ -452,19 +456,23 @@ public class ExersiceActivity extends AppCompatActivity {
                     }
               }
 
+            btnHistoryNext.setVisibility(View.VISIBLE);
+
         });
 
         btnHistoryNext.setOnClickListener(v->{
-            btnHistoryBack.setVisibility(View.VISIBLE);
 
             if (getCorrectHistory != exerciseHistoryRoot.size() - 1) {
                 historyRecyclerView(exerciseHistoryRoot, ++getCorrectHistory);
+
 
                 if (getCorrectHistory == exerciseHistoryRoot.size() - 1){
                     btnHistoryNext.setVisibility(View.INVISIBLE);
                 }
 
             }
+
+            btnHistoryBack.setVisibility(View.VISIBLE);
 
         });
 
@@ -691,7 +699,29 @@ public class ExersiceActivity extends AppCompatActivity {
 
         if (exerciseHistories.size() != 0) {
 
-            RecyclerView recyclerView = findViewById(R.id.history_recyclerview);
+
+            noHistory.setVisibility(View.INVISIBLE);
+            btnHistoryNext.setVisibility(View.VISIBLE);
+            btnHistoryBack.setVisibility(View.VISIBLE);
+            tvDateHistory.setVisibility(View.VISIBLE);
+            tvDayHistory.setVisibility(View.VISIBLE);
+            recyclerView.setVisibility(View.VISIBLE);
+
+            if (exerciseHistories.size() == 1){
+
+                btnHistoryNext.setVisibility(View.INVISIBLE);
+                btnHistoryBack.setVisibility(View.INVISIBLE);
+
+            } else {
+
+                btnHistoryNext.setVisibility(View.VISIBLE);
+                btnHistoryBack.setVisibility(View.VISIBLE);
+
+            }
+
+            btnHistoryNext.setVisibility(View.INVISIBLE);
+
+//            RecyclerView recyclerView = findViewById(R.id.history_recyclerview);
             ExsercieHistoryRecyclerAdapter adapter = new ExsercieHistoryRecyclerAdapter(exerciseHistories, dateCounter, getLayoutInflater());
             recyclerView.setLayoutManager(new LinearLayoutManager(this));
             recyclerView.setAdapter(adapter);
@@ -713,6 +743,16 @@ public class ExersiceActivity extends AppCompatActivity {
             } catch (ParseException e) {
                 e.printStackTrace();
             }
+
+
+        } else {
+
+            noHistory.setVisibility(View.VISIBLE);
+            btnHistoryNext.setVisibility(View.INVISIBLE);
+            btnHistoryBack.setVisibility(View.INVISIBLE);
+            tvDateHistory.setVisibility(View.INVISIBLE);
+            tvDayHistory.setVisibility(View.INVISIBLE);
+            recyclerView.setVisibility(View.INVISIBLE);
 
 
         }
